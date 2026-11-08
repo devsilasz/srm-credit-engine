@@ -1,0 +1,23 @@
+# SO e editores
+.DS_Store
+.idea/
+.vscode/
+
+# Backend
+backend/target/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+
+# Ambiente e Claude Code local
+.env
+.claude/settings.local.json
+
+# Série bruta do k6 (passa de 100 MB); o agregado por degrau é versionado
+docs/perf/stress.csv
+
+# Caches locais de ferramentas (Maven/npm) mantidos dentro do projeto
+.cache/
