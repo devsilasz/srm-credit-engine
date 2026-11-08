@@ -9,15 +9,11 @@ import java.time.Instant;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.UncategorizedSQLException;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /** O banco protege o registro mesmo de quem ignora a aplicação. */
 class SettlementTableIT extends AbstractIT {
-
-  @Autowired JdbcTemplate jdbc;
 
   @Test
   @DisplayName("AC-SET-10 trigger rejeita UPDATE direto")

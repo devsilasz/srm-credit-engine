@@ -127,6 +127,32 @@ class PricingEngineTest {
   }
 
   @Test
+  void normalizesFaceValueScale() {
+    PricingResult result =
+        engine.price(
+            ReceivableType.DUPLICATA_MERCANTIL,
+            new BigDecimal("100000"),
+            3,
+            PaymentCurrency.BRL,
+            null);
+
+    assertThat(result.faceValue().toPlainString()).isEqualTo("100000.00");
+  }
+
+  @Test
+  void neverRoundsFaceValueSilently() {
+    assertThatThrownBy(
+            () ->
+                engine.price(
+                    ReceivableType.DUPLICATA_MERCANTIL,
+                    new BigDecimal("100.001"),
+                    3,
+                    PaymentCurrency.BRL,
+                    null))
+        .isInstanceOf(ArithmeticException.class);
+  }
+
+  @Test
   void failsAtStartupWhenATypeHasNoStrategy() {
     List<PricingStrategy> onlyDuplicata = List.of(new DuplicataMercantilStrategy());
 

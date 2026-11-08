@@ -9,6 +9,6 @@
 | AC-FX-05 | taxa ≤ 0 ou com mais de 8 casas | `POST /api/fx-rates` | `400`/`422` | Funcional | `FxRateApiIT#refusesNonPositiveRate, #refusesRateWithTooManyDecimals` |
 | AC-FX-06 | provedor com atraso > 2 s | `POST /api/fx-rates/refresh` | `503` em ≤ 2,5 s por tentativa, `Retry-After` presente, nada gravado | Operação | `FxResilienceIT#slowProviderTimesOut` |
 | AC-FX-07 | provedor falha N vezes seguidas | novo refresh | o circuit breaker abre; a resposta `503` vem em < 50 ms, sem chamar o provedor; métrica de estado do CB exposta | Operação | `FxResilienceIT#repeatedFailuresOpenCircuit` |
-| AC-FX-08 | taxa vigente com idade > `fx.max-age` | liquidação em USD | `503`, `code = FX_RATE_UNAVAILABLE`, 0 linhas em `settlement`, recebível segue `OPEN` | Funcional | PENDENTE |
-| AC-FX-09 | taxa vencida (mesmo cenário do 08) | liquidação em BRL | `201` normalmente (BRL não depende de câmbio) | Funcional | PENDENTE |
-| AC-FX-10 | provedor caiu, mas a taxa ainda está dentro do `max-age` | liquidação em USD | `201` usando a taxa vigente; o `fx_rate_id` gravado aponta para ela | Funcional | PENDENTE |
+| AC-FX-08 | taxa vigente com idade > `fx.max-age` | liquidação em USD | `503`, `code = FX_RATE_UNAVAILABLE`, 0 linhas em `settlement`, recebível segue `OPEN` | Funcional | `SettlementApiIT#staleRateRefusesUsd` |
+| AC-FX-09 | taxa vencida (mesmo cenário do 08) | liquidação em BRL | `201` normalmente (BRL não depende de câmbio) | Funcional | `SettlementApiIT#staleRateDoesNotAffectBrl` |
+| AC-FX-10 | provedor caiu, mas a taxa ainda está dentro do `max-age` | liquidação em USD | `201` usando a taxa vigente; o `fx_rate_id` gravado aponta para ela | Funcional | `FxResilienceIT#settlementDoesNotDependOnProvider` |
