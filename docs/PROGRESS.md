@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 4 — `feat/persistence`
-**Último comando:** merge do PR #3
-**Próximo passo:** migrations, entidades e repositórios.
+**Etapa atual:** 5 — `feat/fx-rates`
+**Último comando:** `./mvnw verify`
+**Próximo passo:** PR da etapa 5 e depois `feat/settlement`.
 
 ## Ambiente de execução do agente
 
@@ -26,8 +26,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 1 | `docs/spec` | ✅ | #1 | |
 | 2 | `chore/scaffold` | ✅ | #2 | CI verde com Testcontainers 1.21.4 |
 | 3 | `feat/pricing-engine` | ✅ | #3 | |
-| 4 | `feat/persistence` | em andamento | | |
-| 5 | `feat/fx-rates` | | | |
+| 4 | `feat/persistence` | ✅ | #4 | |
+| 5 | `feat/fx-rates` | em andamento | | |
 | 6 | `feat/settlement` | | | |
 | 7 | `feat/statement` | | | |
 | 8 | `feat/api-errors` | | | |
