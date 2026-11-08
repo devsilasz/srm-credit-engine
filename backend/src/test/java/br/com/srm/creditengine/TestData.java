@@ -65,4 +65,25 @@ public final class TestData {
         UUID.randomUUID(),
         OffsetDateTime.ofInstant(settledAt, ZoneOffset.UTC));
   }
+
+  /** Liquidação em USD coerente com C3. */
+  public static long usdSettlement(JdbcTemplate jdbc, long assignorId, Instant settledAt) {
+    long receivableId = settledReceivable(jdbc, assignorId);
+    long fxRateId = fxRate(jdbc, "5.4321", settledAt);
+    return jdbc.queryForObject(
+        """
+        INSERT INTO settlement (receivable_id, assignor_id, receivable_type, face_value, term_months,
+            base_rate_monthly, spread_monthly, present_value_brl, discount, payment_currency,
+            present_value_payment, fx_rate_id, fx_rate, idempotency_key, request_hash, settled_at)
+        VALUES (?, ?, 'DUPLICATA_MERCANTIL', 100000.00, 3, 0.01, 0.015, 92859.94, 7140.06, 'USD',
+            17094.67, ?, 5.4321, ?, 'hash', ?)
+        RETURNING id
+        """,
+        Long.class,
+        receivableId,
+        assignorId,
+        fxRateId,
+        UUID.randomUUID(),
+        OffsetDateTime.ofInstant(settledAt, ZoneOffset.UTC));
+  }
 }
