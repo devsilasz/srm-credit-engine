@@ -25,13 +25,13 @@
 
 | ID | Dado | Quando | Então | Tipo | Teste |
 |---|---|---|---|---|---|
-| AC-PERF-01 | 10.000 liquidações seed | **carga:** quote 20 req/s, extrato 10 req/s e liquidação 5 req/s por 2 min | quote p95 < 150 ms e p99 < 300 ms; extrato p95 < 100 ms; liquidação p95 < 300 ms; 0 erros | Desempenho | PENDENTE (`perf/load.js` → `docs/perf/load-summary.json`) |
-| AC-PERF-02 | — | timer `credit_engine_pricing_duration` durante a carga | p99 do motor < 5 ms | Desempenho | PENDENTE |
+| AC-PERF-01 | 10.000 liquidações seed | **carga:** quote 20 req/s, extrato 10 req/s e liquidação 5 req/s por 2 min | quote p95 < 150 ms e p99 < 300 ms; extrato p95 < 100 ms; liquidação p95 < 300 ms; 0 erros | Desempenho | `perf/load.js → docs/perf/REPORT.md (thresholds do k6)` |
+| AC-PERF-02 | — | timer `credit_engine_pricing_duration` durante a carga | p99 do motor < 5 ms | Desempenho | `perf/report.py lê docs/perf/load-pricing-timer.txt` |
 | AC-PERF-03 | `docker compose up -d --build` com cache | — | API `healthy` em < 60 s | Desempenho | MANUAL |
-| AC-PERF-04 | — | **estresse:** quote em degraus 50→800 req/s | ponto de quebra (p95 > 1 s ou erro > 1%) registrado com a vazão máxima sustentada, ou "não atingido até 800 req/s" | Desempenho | PENDENTE (`perf/stress.js` → `docs/perf/REPORT.md`) |
-| AC-PERF-05 | estresse com liquidações hostis (3x mesma chave + 1 chave diferente por recebível) | durante a saturação | só aparecem `201`, `200`, `409`, `503`/`500`; nenhum `2xx` indevido | Funcional | PENDENTE (`perf/stress.js`) |
-| AC-PERF-06 | fim do estresse | `perf/integrity.sql` | 0 duplicidades, 0 liquidações pela metade, 0 USD sem taxa, 0 inconsistências face = PV + deságio | Funcional | PENDENTE (`docs/perf/integrity-output.txt`) |
-| AC-PERF-07 | fim do estresse | `GET /actuator/health` | `UP` sem restart manual | Operação | PENDENTE |
+| AC-PERF-04 | — | **estresse:** quote em degraus 50→800 req/s | ponto de quebra (p95 > 1 s ou erro > 1%) registrado com a vazão máxima sustentada, ou "não atingido até 800 req/s" | Desempenho | `perf/stress.js → docs/perf/stress-by-step.csv` |
+| AC-PERF-05 | estresse com liquidações hostis (3x mesma chave + 1 chave diferente por recebível) | durante a saturação | só aparecem `201`, `200`, `409`, `503`/`500`; nenhum `2xx` indevido | Funcional | `perf/stress.js (thresholds hostile_unexpected_status e hostile_double_success)` |
+| AC-PERF-06 | fim do estresse | `perf/integrity.sql` | 0 duplicidades, 0 liquidações pela metade, 0 USD sem taxa, 0 inconsistências face = PV + deságio | Funcional | `perf/integrity.sql → docs/perf/integrity-output.txt` |
+| AC-PERF-07 | fim do estresse | `GET /actuator/health` | `UP` sem restart manual | Operação | `perf/run.sh → docs/perf/health-after-stress.txt` |
 
 ## Cobertura
 
