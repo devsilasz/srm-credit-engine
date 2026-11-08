@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 5 — `feat/fx-rates`
+**Etapa atual:** 6 — `feat/settlement`
 **Último comando:** `./mvnw verify`
-**Próximo passo:** PR da etapa 5 e depois `feat/settlement`.
+**Próximo passo:** PR da etapa 6 e depois `feat/statement`.
 
 ## Ambiente de execução do agente
 
@@ -18,6 +18,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 - `PricingEngineTest#largeFactorKeepsPrecision`: o agente escreveu o valor esperado `140171.21` de cabeça, com um comentário dizendo que estava conferido. O teste falhou com `137850.54`. Um cálculo independente (Python `decimal`, prec=2000) deu `137850.5359…`: o motor estava certo e o teste, errado.
 - Skill `golden-cases`: a conferência manual cita `92859,94 / 5,4321 = 17094,670…`. O valor real é `17094,6668…`. O resultado arredondado (`17094,67`) não muda.
 
+- `SettlementConcurrencyIT#sameKeyBothGetTheSameSettlement` falhou com `[201, 409]` em 1 de 5 repetições na primeira versão de `SettlementService`, escrita pelo agente. Causa: a perdedora lia a chave antes do commit da vencedora e o recebível depois dele, e respondia `409` sem reler a chave. O `@RepeatedTest(5)` pegou o bug; uma execução única poderia ter passado.
+
 ## Etapas
 
 | # | Branch | Status | PR | Observação |
@@ -27,8 +29,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 2 | `chore/scaffold` | ✅ | #2 | CI verde com Testcontainers 1.21.4 |
 | 3 | `feat/pricing-engine` | ✅ | #3 | |
 | 4 | `feat/persistence` | ✅ | #4 | |
-| 5 | `feat/fx-rates` | em andamento | | |
-| 6 | `feat/settlement` | | | |
+| 5 | `feat/fx-rates` | ✅ | #5 | |
+| 6 | `feat/settlement` | em andamento | | |
 | 7 | `feat/statement` | | | |
 | 8 | `feat/api-errors` | | | |
 | 9 | `feat/observability` | | | |
