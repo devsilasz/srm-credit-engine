@@ -314,6 +314,11 @@ td {
   white-space: nowrap;
 }
 
+/* Número é sempre a serifa, como no borderô: os algarismos têm largura fixa e alinham na coluna. */
+td.num {
+  font-family: var(--serif);
+}
+
 .num {
   text-align: right;
 }

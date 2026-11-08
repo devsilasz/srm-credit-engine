@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import { useForm, useWatch } from 'react-hook-form';
-import { api, type QuoteInput } from '../../lib/api';
+import { api, readableMessage, type QuoteInput } from '../../lib/api';
 import { money, TYPE_LABELS } from '../../lib/format';
 import { useDebouncedValue } from '../../lib/useDebouncedValue';
 import { QuoteSheet } from './QuoteSheet';
@@ -69,7 +69,7 @@ export function OperatorPanel() {
         className="desk-form"
         noValidate
         onSubmit={handleSubmit((data) => {
-          if (canSettle) settlement.mutate(data);
+          if (canSettle) settlement.settle(data);
         })}
       >
         <h2>Recebível</h2>
@@ -156,8 +156,8 @@ export function OperatorPanel() {
         )}
         {settlement.isError && attemptMatchesForm && (
           <p className="paper-error" role="alert">
-            {settlement.error.message} Clique em Liquidar de novo: a tentativa não cria outro
-            recebível.
+            {readableMessage(settlement.error)} Clique em Liquidar de novo: a tentativa não cria
+            outro recebível.
           </p>
         )}
         {settledThisForm && settlement.data && (

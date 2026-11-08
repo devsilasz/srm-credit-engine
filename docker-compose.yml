@@ -54,5 +54,18 @@ services:
       backend:
         condition: service_healthy
 
+  # Fluxo do operador com Playwright, sem instalar navegador na máquina.
+  e2e:
+    build: ./frontend/e2e
+    profiles: ["e2e"]
+    environment:
+      BASE_URL: http://frontend
+      API_URL: http://backend:8080
+    volumes:
+      - ./docs/screenshots:/results
+    depends_on:
+      frontend:
+        condition: service_healthy
+
 volumes:
   db-data:
