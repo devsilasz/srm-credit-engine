@@ -37,8 +37,8 @@
 
 | ID | Dado | Quando | Então | Tipo | Teste |
 |---|---|---|---|---|---|
-| AC-COV-01 | — | `./mvnw verify` | build falha se a cobertura de linhas do projeto (unit + IT) < 70% | Operação | PENDENTE (JaCoCo `check`) |
-| AC-COV-02 | — | `./mvnw verify` | build falha se a cobertura de linhas ou de branches de `domain.pricing` < 90% | Operação | PENDENTE (JaCoCo `check`) |
+| AC-COV-01 | — | `./mvnw verify` | build falha se a cobertura de linhas do projeto (unit + IT) < 70% | Operação | MANUAL: `./mvnw verify` (JaCoCo `check`); gate provado subindo a meta para 0.99 → `Coverage checks have not been met` |
+| AC-COV-02 | — | `./mvnw verify` | build falha se a cobertura de linhas ou de branches de `domain.pricing` < 90% | Operação | MANUAL: `./mvnw verify` (JaCoCo `check`, regra do pacote `domain.pricing`) |
 
 ## Operação
 

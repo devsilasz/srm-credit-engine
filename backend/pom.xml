@@ -21,6 +21,8 @@
     <spotless.version>2.46.1</spotless.version>
     <resilience4j.version>2.3.0</resilience4j.version>
     <springdoc.version>2.8.17</springdoc.version>
+    <jacoco.version>0.8.12</jacoco.version>
+    <jacoco.merged.file>${project.build.directory}/jacoco-merged.exec</jacoco.merged.file>
   </properties>
 
   <dependencies>
@@ -120,6 +122,102 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <configuration>
+          <excludes>
+            <exclude>**/CreditEngineApplication*</exclude>
+            <exclude>**/config/**</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>prepare-unit</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>prepare-integration</id>
+            <goals>
+              <goal>prepare-agent-integration</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>merge</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>merge</goal>
+            </goals>
+            <configuration>
+              <fileSets>
+                <fileSet>
+                  <directory>${project.build.directory}</directory>
+                  <followSymlinks>true</followSymlinks>
+                  <includes>
+                    <include>jacoco.exec</include>
+                    <include>jacoco-it.exec</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+              <destFile>${jacoco.merged.file}</destFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>report-merged</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${jacoco.merged.file}</dataFile>
+              <outputDirectory>${project.build.directory}/site/jacoco-merged</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>check-merged</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <dataFile>${jacoco.merged.file}</dataFile>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.70</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+                <rule>
+                  <element>PACKAGE</element>
+                  <includes>
+                    <include>br.com.srm.creditengine.domain.pricing</include>
+                  </includes>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.90</minimum>
+                    </limit>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.90</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
           </execution>
         </executions>
       </plugin>
