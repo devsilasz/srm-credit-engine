@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 10 — `feat/frontend`
+**Etapa atual:** 11 — `chore/docker-ci`
 **Último comando:** `./mvnw verify`
-**Próximo passo:** lint e build do painel, PR da etapa 10.
+**Próximo passo:** subir o compose, conferir cobertura e abrir o PR da etapa 11.
 
 ## Ambiente de execução do agente
 
@@ -25,6 +25,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 - Etapa 8: o agente encadeou `verify | grep ... && git commit`, e o `&&` viu o código de saída do `grep`. O `verify` local tinha falhado (cópias do iCloud em `target/`), mas o commit e o merge do PR #8 seguiram. O CI passou no mesmo código. Depois disso, o `verify` passou a rodar por um script que devolve o código real do Maven.
 
+- Etapa 11: com o symlink `target -> target.nosync`, o `fileSet` do `merge` não encontrou os `.exec`. `merge`, `report` e `check` do JaCoCo pularam e o build deu `BUILD SUCCESS` sem medir nada. Corrigido com `followSymlinks`; o upload do CI agora usa `if-no-files-found: error` para quebrar se o relatório faltar.
+
 ## Etapas
 
 | # | Branch | Status | PR | Observação |
@@ -39,8 +41,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 7 | `feat/statement` | ✅ | #7 | |
 | 8 | `feat/api-errors` | ✅ | #8 | merge com `verify` local vermelho por causa do iCloud; CI verde |
 | 9 | `feat/observability` | ✅ | #9 | |
-| 10 | `feat/frontend` | em andamento | | |
-| 11 | `chore/docker-ci` | | | |
+| 10 | `feat/frontend` | ✅ | #10 | |
+| 11 | `chore/docker-ci` | em andamento | | |
 | 12 | `test/e2e` | | | |
 | 13 | `test/contract` | | | |
 | 14 | `test/perf` | | | |
