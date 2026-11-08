@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: srm-credit-engine
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/srm}
+    username: ${SPRING_DATASOURCE_USERNAME:srm}
+    password: ${SPRING_DATASOURCE_PASSWORD:srm}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
