@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 12 — `test/e2e`
+**Etapa atual:** limpeza das cópias do iCloud; depois 13 — `test/contract`
 **Último comando:** `./mvnw verify`
-**Próximo passo:** rodar o Playwright contra o compose, conferir o screenshot e abrir o PR da etapa 12.
+**Próximo passo:** `ContractIT`.
 
 ## Ambiente de execução do agente
 
@@ -14,7 +14,7 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
   A primeira execução chegou a criar esse arquivo fora do projeto; ele não existia antes e foi removido.
 
 - O projeto está no Desktop sincronizado pelo iCloud (atributo `com.apple.file-provider-domain-id` em `~/Desktop`). A sincronização criou 130 cópias `* 2.class` em `backend/target` e quebrou o `verify` local com `TestData 2 (wrong name)`, além de dois diretórios vazios em `backend/src` (`main 2`, `test 2`), já removidos.
-  Mitigação local, fora do git: `backend/target` e `.cache` são symlinks para diretórios `.nosync`. Exclusões em `.git/info/exclude`. **Recomendação ao autor:** mover o repositório para fora do Desktop/Documentos.
+  Mitigação local, fora do git: `backend/target`, `frontend/node_modules` e `.cache` são symlinks para diretórios `.nosync`, e `.git` é um gitfile que aponta para `.git.nosync` (o iCloud chegou a criar `.git/index 2`). Exclusões em `.git.nosync/info/exclude`. **Recomendação ao autor:** mover o repositório para fora do Desktop/Documentos.
 
 ## Fatos para o "Log do agente" do `AI_USAGE.md`
 
@@ -29,6 +29,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 - Etapa 12: `crypto.randomUUID` não existe fora de contexto seguro, e o Playwright no contêiner acessa `http://frontend`. A liquidação falhava com a mensagem crua do JavaScript. Corrigido na aplicação, com fallback para `crypto.getRandomValues`.
 - Etapa 12: o teste de duplo clique com `dblclick` passava só por causa do tempo entre os eventos. Com dois `button.click()` no mesmo tick, as duas mutações criavam dois recebíveis com a mesma chave. O backend recusou a segunda com `422` (a idempotência do servidor segurou o dinheiro), mas o operador via erro numa liquidação concluída e sobrava um recebível órfão. Corrigido com uma trava síncrona em `useSettlementIntent`.
+
+- Etapa 12: `git add -A` levou para a `main` 8 cópias de conflito do iCloud (`frontend/vite.config 2.ts` e outras) no PR #12. Foram removidas por um commit normal, sem reescrever histórico, e o padrão entrou nas exclusões locais.
 
 ## Etapas
 
@@ -46,7 +48,7 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 9 | `feat/observability` | ✅ | #9 | |
 | 10 | `feat/frontend` | ✅ | #10 | |
 | 11 | `chore/docker-ci` | ✅ | #11 | |
-| 12 | `test/e2e` | em andamento | | |
+| 12 | `test/e2e` | ✅ | #12 | levou cópias do iCloud; removidas no PR seguinte |
 | 13 | `test/contract` | | | |
 | 14 | `test/perf` | | | |
 | 15 | `docs/review-decisions` | | | |
