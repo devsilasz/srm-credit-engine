@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-srm}
+      POSTGRES_USER: ${DB_USER:-srm}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-srm}
+    # Sem `ports`: a 5432 pode estar ocupada na máquina. Acesso via `docker compose exec db psql`.
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-srm} -d ${DB_NAME:-srm}"]
+      interval: 5s
+      retries: 20
+
+  backend:
+    build: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME:-srm}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-srm}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-srm}
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health | grep -q UP"]
+      interval: 5s
+      retries: 30
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ > /dev/null"]
+      interval: 5s
+      retries: 10
+
+  # Só sobe com --profile perf; não afeta o `up -d`.
+  k6:
+    image: grafana/k6:0.54.0
+    profiles: ["perf"]
+    environment:
+      BASE_URL: http://backend:8080
+    volumes:
+      - ./perf:/scripts
+      - ./docs/perf:/results
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  db-data:
