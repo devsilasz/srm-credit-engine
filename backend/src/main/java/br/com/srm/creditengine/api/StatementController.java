@@ -4,6 +4,9 @@ import br.com.srm.creditengine.domain.BusinessRuleException;
 import br.com.srm.creditengine.domain.ErrorCode;
 import br.com.srm.creditengine.domain.model.PaymentCurrency;
 import br.com.srm.creditengine.infrastructure.persistence.StatementQuery;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /** Relatório: atalha a camada de aplicação, como o enunciado permite, porque não há regra aqui. */
+@Tag(name = "Liquidações")
 @RestController
 @RequestMapping("/api/settlements")
 public class StatementController {
@@ -24,6 +28,13 @@ public class StatementController {
     this.statement = statement;
   }
 
+  @Operation(
+      summary = "Extrato de liquidações",
+      description =
+          "Paginação no servidor. `from` e `to` são dias inteiros em America/Sao_Paulo, inclusive."
+              + " `sort` aceita settledAt, faceValue ou presentValue, com asc ou desc.")
+  @ApiResponse(responseCode = "200", description = "Página do extrato")
+  @ApiResponse(responseCode = "400", description = "Filtro inválido")
   @GetMapping
   public StatementPage list(
       @RequestParam(required = false) LocalDate from,

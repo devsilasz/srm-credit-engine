@@ -12,8 +12,8 @@
 | AC-PRC-08 | vencimento = hoje + 3 meses | `POST /api/pricing/quote` | `termMonths = 3` na resposta | Funcional | `QuoteApiIT#exactMonths, TermCalculatorTest#roundsTermUp` |
 | AC-PRC-09 | vencimento = hoje + 2 meses e 1 dia | `POST /api/pricing/quote` | `termMonths = 3` (arredonda para cima; premissa do SPEC) | Funcional | `QuoteApiIT#partialMonthRoundsUp, TermCalculatorTest#roundsTermUp` |
 | AC-PRC-10 | vencimento ≤ hoje | `POST /api/pricing/quote` | `422`, `code = DUE_DATE_NOT_IN_FUTURE` | Funcional | `QuoteApiIT#dueDateNotInFuture, TermCalculatorTest#refusesDueDateNotInFuture` |
-| AC-PRC-11 | face ≤ 0 ou com 3+ casas decimais | `POST /api/pricing/quote` | `400` com `errors[].field = faceValue` | Funcional | PENDENTE |
-| AC-PRC-12 | tipo de recebível desconhecido | `POST /api/pricing/quote` | `400` listando os tipos aceitos | Funcional | PENDENTE |
+| AC-PRC-11 | face ≤ 0 ou com 3+ casas decimais | `POST /api/pricing/quote` | `400` com `errors[].field = faceValue` | Funcional | `ApiErrorsIT#invalidFaceValueIs400` |
+| AC-PRC-12 | tipo de recebível desconhecido | `POST /api/pricing/quote` | `400` listando os tipos aceitos | Funcional | `ApiErrorsIT#unknownTypeListsAcceptedValues` |
 | AC-PRC-13 | qualquer quote | resposta serializada | `presentValue`, `discount` e `fxRate` são **strings** JSON com escala fixa | Funcional | `QuoteApiIT#valuesAreStrings` |
 | AC-PRC-14 | um novo tipo de recebível com spread próprio | dev adiciona uma `PricingStrategy` | nenhuma classe existente além do enum muda (Open/Closed — preparo para a mudança ao vivo) | Operação | MANUAL: revisar diff |
 | AC-PRC-15 | qualquer quote | resposta | inclui `baseRate`, `spread`, `termMonths` e `fxRateId` (quando USD), para o operador entender o cálculo | Usabilidade | `QuoteApiIT#responseExplainsCalculation, QuoteApiIT#goldenCaseC3` |

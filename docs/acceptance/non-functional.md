@@ -4,8 +4,8 @@
 
 | ID | Dado | Quando | Então | Tipo | Teste |
 |---|---|---|---|---|---|
-| AC-API-01 | qualquer erro | resposta | `Content-Type: application/problem+json` com `type`, `title`, `status`, `detail` e `code` | Funcional | PENDENTE |
-| AC-API-02 | exceção inesperada | resposta | `500` genérico sem stack trace nem SQL no corpo; log ERROR com stack trace | Segurança | PENDENTE |
+| AC-API-01 | qualquer erro | resposta | `Content-Type: application/problem+json` com `type`, `title`, `status`, `detail` e `code` | Funcional | `ApiErrorsIT#everyErrorIsAProblemDetail` |
+| AC-API-02 | exceção inesperada | resposta | `500` genérico sem stack trace nem SQL no corpo; log ERROR com stack trace | Segurança | `ApiErrorsIT#unexpectedErrorHidesInternals` |
 | AC-API-03 | — | `GET /v3/api-docs` | cada endpoint documenta todos os status da tabela da skill `api-conventions` | Operação | PENDENTE (`ContractIT`) |
 | AC-API-05 | API rodando | requisições reais de sucesso e de erro de cada endpoint | request e response validam contra o OpenAPI publicado, com 0 violações | Funcional | PENDENTE (`ContractIT`) |
 | ~~AC-API-06~~ | ~~`docs/openapi.json` versionado~~ | ~~o spec gerado muda~~ | ~~`ContractIT` falha até o snapshot ser atualizado~~ | Operação | MANUAL: removido; o enunciado não pede, e AC-API-05 já valida o contrato real |
@@ -17,7 +17,7 @@
 |---|---|---|---|---|---|
 | AC-SEC-01 | — | revisão de código | zero SQL concatenado; todo SQL nativo usa parâmetros | Segurança | MANUAL: grep |
 | AC-SEC-02 | `receivableId = "1 OR 1=1"` | `POST /api/settlements` | `400` (tipo inválido), nada executado | Segurança | `SettlementApiIT#sqlInjectionAttemptIsRefused` |
-| AC-SEC-03 | payload > 64 KB | qualquer POST | `413`/`400` | Segurança | PENDENTE |
+| AC-SEC-03 | payload > 64 KB | qualquer POST | `413`/`400` | Segurança | `ApiErrorsIT#oversizedBodyIs413, #oversizedChunkedBodyIs413` |
 | AC-SEC-04 | — | inspeção do compose | credenciais do banco vêm de variável de ambiente (com padrão só para dev); nenhum segredo real versionado | Segurança | MANUAL |
 | AC-SEC-05 | ⚠️ DECISÃO DO AUTOR | — | autenticação e autorização fora do escopo, justificadas em DECISIONS.md (o que seria: OAuth2/JWT, papel OPERADOR vs. AUDITOR) | Segurança | MANUAL: DECISIONS.md |
 

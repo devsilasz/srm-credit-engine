@@ -8,6 +8,9 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+  web:
+    locale: pt_BR
+    locale-resolver: fixed
   jackson:
     default-property-inclusion: non_null
   jpa:
@@ -20,6 +23,12 @@ management:
     web:
       exposure:
         include: health,prometheus
+
+springdoc:
+  api-docs:
+    version: openapi_3_0
+  # Só os status declarados em cada operação; sem isso, todo @ExceptionHandler vira resposta de todas.
+  override-with-generic-response: false
 
 pricing:
   base-rate-monthly: 0.01

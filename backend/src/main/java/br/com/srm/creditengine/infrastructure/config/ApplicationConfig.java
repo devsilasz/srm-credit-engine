@@ -16,6 +16,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableScheduling
@@ -37,6 +39,21 @@ public class ApplicationConfig {
   @Bean
   PricingEngine pricingEngine(List<PricingStrategy> strategies, PricingProperties properties) {
     return new PricingEngine(strategies, properties.baseRateMonthly());
+  }
+
+  /** Só para o Vite em desenvolvimento. No compose, o Nginx faz proxy e não há CORS. */
+  @Bean
+  WebMvcConfigurer viteDevCors() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry
+            .addMapping("/api/**")
+            .allowedOrigins("http://localhost:5173")
+            .allowedMethods("GET", "POST")
+            .exposedHeaders("Location", "Idempotent-Replayed", "Retry-After");
+      }
+    };
   }
 
   /** Dinheiro e taxa trafegam como string: número JSON vira float binário no cliente. */
