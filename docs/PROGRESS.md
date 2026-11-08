@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** limpeza das cópias do iCloud; depois 13 — `test/contract`
+**Etapa atual:** 13 — `test/contract`
 **Último comando:** `./mvnw verify`
-**Próximo passo:** `ContractIT`.
+**Próximo passo:** PR da etapa 13 e depois `test/perf`.
 
 ## Ambiente de execução do agente
 
@@ -32,6 +32,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 - Etapa 12: `git add -A` levou para a `main` 8 cópias de conflito do iCloud (`frontend/vite.config 2.ts` e outras) no PR #12. Foram removidas por um commit normal, sem reescrever histórico, e o padrão entrou nas exclusões locais.
 
+- Etapa 13: o `ContractIT` revelou que o schema `Problem` não estava no spec publicado: todas as respostas de erro referenciavam algo inexistente, porque o springdoc descarta os `components` do bean `OpenAPI`. Corrigido registrando o schema no `OpenApiCustomizer`.
+
 ## Etapas
 
 | # | Branch | Status | PR | Observação |
@@ -49,7 +51,7 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 10 | `feat/frontend` | ✅ | #10 | |
 | 11 | `chore/docker-ci` | ✅ | #11 | |
 | 12 | `test/e2e` | ✅ | #12 | levou cópias do iCloud; removidas no PR seguinte |
-| 13 | `test/contract` | | | |
+| 13 | `test/contract` | em andamento | | |
 | 14 | `test/perf` | | | |
 | 15 | `docs/review-decisions` | | | |
 | 16 | `chore/verify-all` | | | |

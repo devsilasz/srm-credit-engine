@@ -12,7 +12,7 @@
 | AC-SET-08 | recebível `OPEN` | 2 threads liquidam ao mesmo tempo com a **mesma** chave | 1 `201` e 1 `200` (replay), mesmo `settlementId`; 1 linha | Funcional | `SettlementConcurrencyIT#sameKeyBothGetTheSameSettlement` |
 | AC-SET-09 | falha forçada após o INSERT de `settlement` e antes do UPDATE de `receivable` | liquidação | rollback total: 0 linhas novas, recebível segue `OPEN`, resposta `500` (nunca `2xx`) | Funcional | `SettlementAtomicityIT#failureBetweenWritesRollsBackEverything (ordem real: UPDATE e depois INSERT; ver R3 no SPEC.md)` |
 | AC-SET-10 | liquidação existente | `UPDATE` ou `DELETE` direto no banco | o trigger rejeita com erro | Segurança | `SettlementTableIT#triggerRejectsUpdate, #triggerRejectsDelete` |
-| AC-SET-11 | — | listo os endpoints no OpenAPI | não existe `PUT`/`PATCH`/`DELETE` em `/api/settlements` | Segurança | PENDENTE |
+| AC-SET-11 | — | listo os endpoints no OpenAPI | não existe `PUT`/`PATCH`/`DELETE` em `/api/settlements` | Segurança | `ContractIT#settlementsCannotBeChangedThroughTheApi` |
 | AC-SET-12 | recebível inexistente | liquido | `404`, `code = RECEIVABLE_NOT_FOUND` | Funcional | `SettlementApiIT#unknownReceivableIs404` |
 | AC-SET-13 | cliente envia um campo `presentValue` no corpo | liquido | o valor é ignorado e recalculado no servidor (ou o campo é rejeitado com `400`) | Segurança | `SettlementApiIT#clientValuesAreIgnored` |
 | AC-SET-14 | ⚠️ DECISÃO DO AUTOR: o lote é tudo-ou-nada? | — | premissa atual: liquidação unitária, cada item é independente | Funcional | MANUAL: ver DECISIONS.md |
