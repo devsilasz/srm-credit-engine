@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 13 — `test/contract`
-**Último comando:** `./mvnw verify`
-**Próximo passo:** PR da etapa 13 e depois `test/perf`.
+**Etapa atual:** 14 — `test/perf`
+**Último comando:** `perf/run.sh` → exit 0, relatório gerado
+**Próximo passo:** rodar carga e estresse reais, gerar `docs/perf/REPORT.md` e abrir o PR.
 
 ## Ambiente de execução do agente
 
@@ -51,8 +51,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 10 | `feat/frontend` | ✅ | #10 | |
 | 11 | `chore/docker-ci` | ✅ | #11 | |
 | 12 | `test/e2e` | ✅ | #12 | levou cópias do iCloud; removidas no PR seguinte |
-| 13 | `test/contract` | em andamento | | |
-| 14 | `test/perf` | | | |
+| 13 | `test/contract` | ✅ | #14 | |
+| 14 | `test/perf` | em andamento | | |
 | 15 | `docs/review-decisions` | | | |
 | 16 | `chore/verify-all` | | | |
 

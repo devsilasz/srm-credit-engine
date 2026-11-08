@@ -1,0 +1,6 @@
+data=2026-11-08T23:06:48Z
+commit=261e7de
+cpu=Apple M4
+ram_gb=16
+so=Darwin 25.5.0
+docker=servidor 28.4.0, 10 CPUs, 8218034176 bytes de memória

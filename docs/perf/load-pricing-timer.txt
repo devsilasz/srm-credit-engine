@@ -1,0 +1,6 @@
+credit_engine_pricing_duration_seconds{quantile="0.5"} 3.8656E-5
+credit_engine_pricing_duration_seconds{quantile="0.95"} 6.9376E-5
+credit_engine_pricing_duration_seconds{quantile="0.99"} 1.02144E-4
+credit_engine_pricing_duration_seconds_count 3754
+credit_engine_pricing_duration_seconds_sum 0.180709794
+credit_engine_pricing_duration_seconds_max 4.615E-4
