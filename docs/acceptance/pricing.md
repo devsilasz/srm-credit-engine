@@ -2,13 +2,13 @@
 
 | ID | Dado | Quando | Então | Tipo | Teste |
 |---|---|---|---|---|---|
-| AC-PRC-01 | Duplicata, face `100000.00`, n=3, BRL, base `0.01` | o motor precifica | PV `92859.94`, deságio `7140.06` (C1) | Funcional | PENDENTE |
-| AC-PRC-02 | Cheque, face `25000.00`, n=2, BRL | o motor precifica | PV `23337.77`, deságio `1662.23` (C2) | Funcional | PENDENTE |
-| AC-PRC-03 | Duplicata, face `100000.00`, n=3, USD, câmbio `5.4321` | o motor precifica | PV `17094.67` USD, deságio `7140.06` BRL (C3) | Funcional | PENDENTE |
-| AC-PRC-04 | conversão com PV BRL `2.01` e `2.03`, câmbio `2` (quocientes exatos `1.005` e `1.015`) | o motor converte para USD | `1.00` e `1.02`: `HALF_EVEN` arredonda para o dígito par. Em BRL, o empate exato é impossível com face de 2 casas | Funcional | PENDENTE |
-| AC-PRC-05 | C3 | o PV em BRL é convertido | a conversão usa o PV BRL **já arredondado** (`92859.94 / 5.4321`), não o valor cheio | Funcional | PENDENTE |
-| AC-PRC-06 | face `0.01`, n=1 | o motor precifica | PV com escala 2, sem `ArithmeticException` | Funcional | PENDENTE |
-| AC-PRC-07 | face `1000000000.00`, n=360 | o motor precifica | PV calculado com escala 2, sem overflow (latência medida em AC-PERF-02) | Funcional | PENDENTE |
+| AC-PRC-01 | Duplicata, face `100000.00`, n=3, BRL, base `0.01` | o motor precifica | PV `92859.94`, deságio `7140.06` (C1) | Funcional | `GoldenCasesTest#reproducesGoldenCaseToTheCent` |
+| AC-PRC-02 | Cheque, face `25000.00`, n=2, BRL | o motor precifica | PV `23337.77`, deságio `1662.23` (C2) | Funcional | `GoldenCasesTest#reproducesGoldenCaseToTheCent` |
+| AC-PRC-03 | Duplicata, face `100000.00`, n=3, USD, câmbio `5.4321` | o motor precifica | PV `17094.67` USD, deságio `7140.06` BRL (C3) | Funcional | `GoldenCasesTest#reproducesGoldenCaseToTheCent` |
+| AC-PRC-04 | conversão com PV BRL `2.01` e `2.03`, câmbio `2` (quocientes exatos `1.005` e `1.015`) | o motor converte para USD | `1.00` e `1.02`: `HALF_EVEN` arredonda para o dígito par. Em BRL, o empate exato é impossível com face de 2 casas | Funcional | `PricingEngineTest#halfEvenOnExactTie` |
+| AC-PRC-05 | C3 | o PV em BRL é convertido | a conversão usa o PV BRL **já arredondado** (`92859.94 / 5.4321`), não o valor cheio | Funcional | `PricingEngineTest#convertsRoundedPresentValue` |
+| AC-PRC-06 | face `0.01`, n=1 | o motor precifica | PV com escala 2, sem `ArithmeticException` | Funcional | `PricingEngineTest#minimumFaceValueWithRepeatingDecimal` |
+| AC-PRC-07 | face `1000000000.00`, n=360 | o motor precifica | PV calculado com escala 2, sem overflow (latência medida em AC-PERF-02) | Funcional | `PricingEngineTest#largeFactorKeepsPrecision` |
 | AC-PRC-08 | vencimento = hoje + 3 meses | `POST /api/pricing/quote` | `termMonths = 3` na resposta | Funcional | PENDENTE |
 | AC-PRC-09 | vencimento = hoje + 2 meses e 1 dia | `POST /api/pricing/quote` | `termMonths = 3` (arredonda para cima; premissa do SPEC) | Funcional | PENDENTE |
 | AC-PRC-10 | vencimento ≤ hoje | `POST /api/pricing/quote` | `422`, `code = DUE_DATE_NOT_IN_FUTURE` | Funcional | PENDENTE |
