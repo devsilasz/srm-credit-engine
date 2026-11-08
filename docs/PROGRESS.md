@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 16 — `chore/verify-all`
-**Último comando:** `.cache/verify.sh` → exit 0
-**Próximo passo:** `scripts/verify-all.sh` sem flags, a partir de `docker compose down -v`.
+**Etapa atual:** concluído; só resta a revisão do autor
+**Último comando:** `scripts/verify-all.sh` sem flags, no commit `583906b` → exit 0 (`VERIFICAÇÃO COMPLETA`)
+**Próximo passo (autor):** preencher as seções 1 a 3 de `AI_USAGE.md`, assumir os critérios em `docs/acceptance/README.md` e revisar a seção 5 do `SPEC.md`.
 
 ## Ambiente de execução do agente
 
@@ -54,7 +54,7 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 13 | `test/contract` | ✅ | #14 | |
 | 14 | `test/perf` | ✅ | #15 | quebra não atingida até 800 req/s |
 | 15 | `docs/review-decisions` | ✅ | #16 | |
-| 16 | `chore/verify-all` | em andamento | | |
+| 16 | `chore/verify-all` | ✅ | #17 | `scripts/verify-all.sh` sem flags → exit 0 |
 
 ## BLOCKED
 
