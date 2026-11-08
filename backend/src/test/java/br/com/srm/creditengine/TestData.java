@@ -23,6 +23,19 @@ public final class TestData {
         unique.replace("-", "").substring(0, 14));
   }
 
+  /** Taxa conhecida e vigente agora, para que o teste não dependa da ordem de execução. */
+  public static long fxRate(JdbcTemplate jdbc, String rate, Instant validFrom) {
+    return jdbc.queryForObject(
+        """
+        INSERT INTO fx_rate (pair, rate, valid_from, source, created_at)
+        VALUES ('USD-BRL', ?::numeric, ?, 'MANUAL', now())
+        RETURNING id
+        """,
+        Long.class,
+        rate,
+        OffsetDateTime.ofInstant(validFrom, ZoneOffset.UTC));
+  }
+
   public static long settledReceivable(JdbcTemplate jdbc, long assignorId) {
     return jdbc.queryForObject(
         """

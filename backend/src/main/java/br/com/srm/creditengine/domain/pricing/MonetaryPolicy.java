@@ -9,6 +9,7 @@ public final class MonetaryPolicy {
 
   public static final int SCALE = 2;
   public static final int RATE_SCALE = 6;
+  public static final int FX_SCALE = 8;
   public static final RoundingMode ROUNDING = RoundingMode.HALF_EVEN;
   public static final MathContext CALC = MathContext.DECIMAL128;
 
