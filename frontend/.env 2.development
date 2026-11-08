@@ -1,2 +1,0 @@
-# Só no Vite. No compose, o Nginx faz proxy de /api e nenhuma URL é necessária.
-VITE_API_URL=http://localhost:8080
