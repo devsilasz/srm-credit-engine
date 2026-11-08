@@ -5,4 +5,4 @@ credit_engine_settlements_total{currency="USD",outcome="success",type="DUPLICATA
 hikaricp_connections_max{pool="HikariPool-1"} 10.0
 hikaricp_connections_pending{pool="HikariPool-1"} 0.0
 hikaricp_connections_timeout_total{pool="HikariPool-1"} 0.0
-jvm_gc_pause_seconds_max{action="end of minor GC",cause="G1 Evacuation Pause",gc="G1 Young Generation"} 0.014
+jvm_gc_pause_seconds_max{action="end of minor GC",cause="G1 Evacuation Pause",gc="G1 Young Generation"} 0.017
