@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 15 — `docs/review-decisions`
+**Etapa atual:** 16 — `chore/verify-all`
 **Último comando:** `.cache/verify.sh` → exit 0
-**Próximo passo:** PR da etapa 15 e depois `chore/verify-all`.
+**Próximo passo:** `scripts/verify-all.sh` sem flags, a partir de `docker compose down -v`.
 
 ## Ambiente de execução do agente
 
@@ -53,8 +53,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 12 | `test/e2e` | ✅ | #12 | levou cópias do iCloud; removidas no PR seguinte |
 | 13 | `test/contract` | ✅ | #14 | |
 | 14 | `test/perf` | ✅ | #15 | quebra não atingida até 800 req/s |
-| 15 | `docs/review-decisions` | em andamento | | |
-| 16 | `chore/verify-all` | | | |
+| 15 | `docs/review-decisions` | ✅ | #16 | |
+| 16 | `chore/verify-all` | em andamento | | |
 
 ## BLOCKED
 
