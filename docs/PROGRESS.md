@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 3 — `feat/pricing-engine`
-**Último comando:** `./mvnw test` (motor e golden cases)
-**Próximo passo:** `./mvnw verify`, PR da etapa 3 e depois `feat/persistence`.
+**Etapa atual:** 4 — `feat/persistence`
+**Último comando:** merge do PR #3
+**Próximo passo:** migrations, entidades e repositórios.
 
 ## Ambiente de execução do agente
 
@@ -25,8 +25,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 0 | preparação (git init, remoto) | ✅ | — | `devsilasz/srm-credit-engine` privado |
 | 1 | `docs/spec` | ✅ | #1 | |
 | 2 | `chore/scaffold` | ✅ | #2 | CI verde com Testcontainers 1.21.4 |
-| 3 | `feat/pricing-engine` | em andamento | | |
-| 4 | `feat/persistence` | | | |
+| 3 | `feat/pricing-engine` | ✅ | #3 | |
+| 4 | `feat/persistence` | em andamento | | |
 | 5 | `feat/fx-rates` | | | |
 | 6 | `feat/settlement` | | | |
 | 7 | `feat/statement` | | | |

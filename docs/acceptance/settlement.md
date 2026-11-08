@@ -11,7 +11,7 @@
 | AC-SET-07 | recebível `OPEN` | 2 threads liquidam ao mesmo tempo com chaves **diferentes** | exatamente 1 `201` e 1 `409`; 1 linha em `settlement` | Funcional | PENDENTE |
 | AC-SET-08 | recebível `OPEN` | 2 threads liquidam ao mesmo tempo com a **mesma** chave | 1 `201` e 1 `200` (replay), mesmo `settlementId`; 1 linha | Funcional | PENDENTE |
 | AC-SET-09 | falha forçada após o INSERT de `settlement` e antes do UPDATE de `receivable` | liquidação | rollback total: 0 linhas novas, recebível segue `OPEN`, resposta `500` (nunca `2xx`) | Funcional | PENDENTE |
-| AC-SET-10 | liquidação existente | `UPDATE` ou `DELETE` direto no banco | o trigger rejeita com erro | Segurança | PENDENTE |
+| AC-SET-10 | liquidação existente | `UPDATE` ou `DELETE` direto no banco | o trigger rejeita com erro | Segurança | `SettlementTableIT#triggerRejectsUpdate, #triggerRejectsDelete` |
 | AC-SET-11 | — | listo os endpoints no OpenAPI | não existe `PUT`/`PATCH`/`DELETE` em `/api/settlements` | Segurança | PENDENTE |
 | AC-SET-12 | recebível inexistente | liquido | `404`, `code = RECEIVABLE_NOT_FOUND` | Funcional | PENDENTE |
 | AC-SET-13 | cliente envia um campo `presentValue` no corpo | liquido | o valor é ignorado e recalculado no servidor (ou o campo é rejeitado com `400`) | Segurança | PENDENTE |
