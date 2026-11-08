@@ -16,13 +16,13 @@ jobs:
           java-version: "21"
           cache: maven
       - run: ./mvnw -B verify
+      # O `check` do JaCoCo só pula, sem falhar, se o .exec sumir. Sem relatório, o job precisa quebrar.
       - name: Upload JaCoCo report
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
           path: backend/target/site/jacoco-merged
-          if-no-files-found: ignore
+          if-no-files-found: error
 
   frontend:
     runs-on: ubuntu-latest
