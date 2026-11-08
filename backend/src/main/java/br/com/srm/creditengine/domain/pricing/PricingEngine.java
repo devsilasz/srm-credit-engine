@@ -5,6 +5,7 @@ import br.com.srm.creditengine.domain.ErrorCode;
 import br.com.srm.creditengine.domain.model.PaymentCurrency;
 import br.com.srm.creditengine.domain.model.ReceivableType;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +37,11 @@ public final class PricingEngine {
       int termMonths,
       PaymentCurrency currency,
       BigDecimal fxRate) {
+    // A API já recusa mais de 2 casas; se chegar aqui, é bug: falha em vez de arredondar calado.
+    BigDecimal face = faceValue.setScale(MonetaryPolicy.SCALE, RoundingMode.UNNECESSARY);
     PricingStrategy strategy = strategies.get(type);
     BigDecimal factor = strategy.discountFactor(baseRateMonthly, termMonths);
-    BigDecimal presentValueBrl = MonetaryPolicy.divideToMoney(faceValue, factor);
+    BigDecimal presentValueBrl = MonetaryPolicy.divideToMoney(face, factor);
     BigDecimal presentValue =
         currency.requiresFx()
             ? MonetaryPolicy.divideToMoney(presentValueBrl, fxRate)
@@ -51,12 +54,12 @@ public final class PricingEngine {
     }
 
     return new PricingResult(
-        faceValue,
+        face,
         termMonths,
         baseRateMonthly.setScale(MonetaryPolicy.RATE_SCALE, MonetaryPolicy.ROUNDING),
         strategy.spreadMonthly().setScale(MonetaryPolicy.RATE_SCALE, MonetaryPolicy.ROUNDING),
         presentValueBrl,
-        faceValue.subtract(presentValueBrl),
+        face.subtract(presentValueBrl),
         currency,
         presentValue);
   }
