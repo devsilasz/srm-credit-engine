@@ -9,7 +9,9 @@ import java.util.List;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-/** Aferição do enunciado (seção 4.3). Se falhar, o bug está no motor: nunca ajuste estes valores. */
+/**
+ * Aferição do enunciado (seção 4.3). Se falhar, o bug está no motor: nunca ajuste estes valores.
+ */
 class GoldenCasesTest {
 
   private final PricingEngine engine =
