@@ -17,3 +17,5 @@
 | AC-PRC-13 | qualquer quote | resposta serializada | `presentValue`, `discount` e `fxRate` são **strings** JSON com escala fixa | Funcional | PENDENTE |
 | AC-PRC-14 | um novo tipo de recebível com spread próprio | dev adiciona uma `PricingStrategy` | nenhuma classe existente além do enum muda (Open/Closed — preparo para a mudança ao vivo) | Operação | MANUAL: revisar diff |
 | AC-PRC-15 | qualquer quote | resposta | inclui `baseRate`, `spread`, `termMonths` e `fxRateId` (quando USD), para o operador entender o cálculo | Usabilidade | PENDENTE |
+| AC-PRC-16 | ⚠️ DECISÃO DO AUTOR: vencimento resulta em mais de 360 meses | `POST /api/pricing/quote` | `422`, `code = DUE_DATE_TOO_FAR` (limita o custo do `pow` e recusa prazo fora do uso real) | Segurança | PENDENTE |
+| AC-PRC-17 | ⚠️ DECISÃO DO AUTOR: PV arredondado resulta em `0.00` na moeda de pagamento (face `0.01`, USD) | `POST /api/pricing/quote` ou liquidação | `422`, `code = PRESENT_VALUE_TOO_SMALL`; nada gravado | Funcional | PENDENTE |
