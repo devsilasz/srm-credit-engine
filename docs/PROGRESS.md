@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 9 — `feat/observability`
+**Etapa atual:** 10 — `feat/frontend`
 **Último comando:** `./mvnw verify`
-**Próximo passo:** métricas e logs.
+**Próximo passo:** lint e build do painel, PR da etapa 10.
 
 ## Ambiente de execução do agente
 
@@ -38,8 +38,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 6 | `feat/settlement` | ✅ | #6 | |
 | 7 | `feat/statement` | ✅ | #7 | |
 | 8 | `feat/api-errors` | ✅ | #8 | merge com `verify` local vermelho por causa do iCloud; CI verde |
-| 9 | `feat/observability` | em andamento | | |
-| 10 | `feat/frontend` | | | |
+| 9 | `feat/observability` | ✅ | #9 | |
+| 10 | `feat/frontend` | em andamento | | |
 | 11 | `chore/docker-ci` | | | |
 | 12 | `test/e2e` | | | |
 | 13 | `test/contract` | | | |
