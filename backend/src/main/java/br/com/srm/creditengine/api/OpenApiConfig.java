@@ -1,6 +1,5 @@
 package br.com.srm.creditengine.api;
 
-import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.info.Info;
@@ -40,35 +39,36 @@ public class OpenApiConfig {
             new Info()
                 .title("SRM Credit Engine API")
                 .version("v1")
-                .description("Precificação e liquidação de recebíveis em BRL e USD."))
-        .components(new Components().addSchemas(PROBLEM, problemSchema()));
+                .description("Precificação e liquidação de recebíveis em BRL e USD."));
   }
 
   /** O formato de erro é único, então é declarado aqui, e não em cada {@code @ApiResponse}. */
   @Bean
   OpenApiCustomizer problemResponses() {
-    return openApi ->
-        openApi
-            .getPaths()
-            .values()
-            .forEach(
-                path ->
-                    path.readOperationsMap()
-                        .forEach(
-                            (method, operation) -> {
-                              if (method == PathItem.HttpMethod.POST) {
-                                operation
-                                    .getResponses()
-                                    .addApiResponse(
-                                        "413",
-                                        new ApiResponse().description("Corpo acima de 64 KB"));
-                              }
+    return openApi -> {
+      // Registrado aqui porque o springdoc descarta os components do bean OpenAPI ao montar o spec.
+      openApi.getComponents().addSchemas(PROBLEM, problemSchema());
+      openApi
+          .getPaths()
+          .values()
+          .forEach(
+              path ->
+                  path.readOperationsMap()
+                      .forEach(
+                          (method, operation) -> {
+                            if (method == PathItem.HttpMethod.POST) {
                               operation
                                   .getResponses()
                                   .addApiResponse(
-                                      "500", new ApiResponse().description("Erro interno"));
-                              operation.getResponses().forEach(OpenApiConfig::describeProblem);
-                            }));
+                                      "413", new ApiResponse().description("Corpo acima de 64 KB"));
+                            }
+                            operation
+                                .getResponses()
+                                .addApiResponse(
+                                    "500", new ApiResponse().description("Erro interno"));
+                            operation.getResponses().forEach(OpenApiConfig::describeProblem);
+                          }));
+    };
   }
 
   private static void describeProblem(String status, ApiResponse response) {
