@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker --version)",
+      "WebSearch",
+      "Bash(gh api *)",
+      "Edit(/.claude/skills/api-conventions/**)",
+      "Edit(/.claude/skills/monetary-precision/**)",
+      "Edit(/.claude/skills/quality-gates/**)",
+      "Edit(/.claude/skills/definition-of-done/**)",
+      "Edit(/.claude/skills/git-workflow/**)",
+      "Edit(/.claude/skills/acceptance-criteria/**)"
+    ]
+  }
+}
