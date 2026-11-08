@@ -1,4 +1,4 @@
-// Carga: prova que o uso esperado da mesa de operações cabe com folga.
+// AC-PERF-01. Carga: prova que o uso esperado da mesa de operações cabe com folga.
 import { check } from 'k6';
 import exec from 'k6/execution';
 import http from 'k6/http';

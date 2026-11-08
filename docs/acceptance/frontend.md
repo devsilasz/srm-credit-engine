@@ -11,5 +11,5 @@
 | AC-UI-07 | liquidação concluída | — | confirmação com o id da liquidação; o grid é atualizado (invalidação da query) | Usabilidade | `operator-flow.spec.ts (passo AC-UI-07)` |
 | AC-UI-08 | grid com > 20 registros | troca de página ou de filtro | a requisição leva `page`/`size`/filtros; os filtros ficam na URL (recarregar mantém o estado) | Funcional | `operator-flow.spec.ts (passo AC-UI-08)` |
 | AC-UI-09 | — | navegação só por teclado | todos os campos e botões são alcançáveis por Tab; labels associados (`<label for>`) | Usabilidade | MANUAL: navegar com Tab |
-| AC-UI-10 | — | revisão de código | nenhuma conta monetária com `number` em `frontend/src` (só exibição de strings da API / `decimal.js`) | Segurança | MANUAL: grep da skill monetary-precision |
+| AC-UI-10 | — | revisão de código | nenhuma conta monetária com `number` em `frontend/src` (só exibição de strings da API / `decimal.js`) | Segurança | MANUAL: `scripts/verify-all.sh`, passo 6, e regra do ESLint em `frontend/eslint.config.js` |
 | AC-UI-11 | recebível criado e `POST /api/settlements` falhou (rede ou 5xx) | o operador clica Liquidar de novo | a nova tentativa reusa o mesmo `receivableId` e a mesma `Idempotency-Key`; nenhum segundo recebível é criado | Funcional | `operator-flow.spec.ts (passo AC-UI-11)` |

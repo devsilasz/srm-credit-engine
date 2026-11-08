@@ -10,7 +10,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 /**
- * Aferição do enunciado (seção 4.3). Se falhar, o bug está no motor: nunca ajuste estes valores.
+ * AC-PRC-01, AC-PRC-02 e AC-PRC-03: aferição do enunciado (seção 4.3). Se falhar, o bug está no
+ * motor: nunca ajuste estes valores.
  */
 class GoldenCasesTest {
 

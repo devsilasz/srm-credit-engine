@@ -1,4 +1,4 @@
-// Estresse: prova que o sistema falha limpo sob pressão e registra até onde ele aguentou.
+// AC-PERF-04 e AC-PERF-05. Estresse: prova que o sistema falha limpo sob pressão e registra até onde ele aguentou.
 // Não há threshold de latência, só de integridade.
 import { check } from 'k6';
 import { Counter } from 'k6/metrics';

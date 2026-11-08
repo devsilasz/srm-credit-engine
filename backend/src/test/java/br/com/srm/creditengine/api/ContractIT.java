@@ -34,8 +34,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 /**
- * Requisições reais validadas contra o OpenAPI publicado pela própria aplicação. O provedor é mock
- * porque um cenário precisa dele fora; os demais usam uma taxa inserida direto no banco.
+ * AC-API-05: requisições reais validadas contra o OpenAPI publicado pela própria aplicação. O
+ * provedor é mock porque um cenário precisa dele fora; os demais usam uma taxa inserida direto no
+ * banco.
  */
 class ContractIT extends AbstractIT {
 
