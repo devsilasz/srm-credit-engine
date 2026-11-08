@@ -1,4 +1,4 @@
--- Depois do estresse, todas as linhas precisam mostrar 0.
+-- AC-PERF-06. Depois do estresse, todas as linhas precisam mostrar 0.
 SELECT 'recebiveis_com_mais_de_uma_liquidacao' AS verificacao, count(*) AS total FROM (
     SELECT receivable_id FROM settlement GROUP BY receivable_id HAVING count(*) > 1
 ) duplicated

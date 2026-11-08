@@ -19,6 +19,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME:-srm}
       SPRING_DATASOURCE_USERNAME: ${DB_USER:-srm}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-srm}
+      # Para demonstrar queda e lentidão do provedor de câmbio.
+      FX_MOCK_FAIL: ${FX_MOCK_FAIL:-false}
+      FX_MOCK_DELAY: ${FX_MOCK_DELAY:-PT0S}
     ports:
       - "8080:8080"
     depends_on:
