@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 11 — `chore/docker-ci`
+**Etapa atual:** 12 — `test/e2e`
 **Último comando:** `./mvnw verify`
-**Próximo passo:** subir o compose, conferir cobertura e abrir o PR da etapa 11.
+**Próximo passo:** rodar o Playwright contra o compose, conferir o screenshot e abrir o PR da etapa 12.
 
 ## Ambiente de execução do agente
 
@@ -27,6 +27,9 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 - Etapa 11: com o symlink `target -> target.nosync`, o `fileSet` do `merge` não encontrou os `.exec`. `merge`, `report` e `check` do JaCoCo pularam e o build deu `BUILD SUCCESS` sem medir nada. Corrigido com `followSymlinks`; o upload do CI agora usa `if-no-files-found: error` para quebrar se o relatório faltar.
 
+- Etapa 12: `crypto.randomUUID` não existe fora de contexto seguro, e o Playwright no contêiner acessa `http://frontend`. A liquidação falhava com a mensagem crua do JavaScript. Corrigido na aplicação, com fallback para `crypto.getRandomValues`.
+- Etapa 12: o teste de duplo clique com `dblclick` passava só por causa do tempo entre os eventos. Com dois `button.click()` no mesmo tick, as duas mutações criavam dois recebíveis com a mesma chave. O backend recusou a segunda com `422` (a idempotência do servidor segurou o dinheiro), mas o operador via erro numa liquidação concluída e sobrava um recebível órfão. Corrigido com uma trava síncrona em `useSettlementIntent`.
+
 ## Etapas
 
 | # | Branch | Status | PR | Observação |
@@ -42,8 +45,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 8 | `feat/api-errors` | ✅ | #8 | merge com `verify` local vermelho por causa do iCloud; CI verde |
 | 9 | `feat/observability` | ✅ | #9 | |
 | 10 | `feat/frontend` | ✅ | #10 | |
-| 11 | `chore/docker-ci` | em andamento | | |
-| 12 | `test/e2e` | | | |
+| 11 | `chore/docker-ci` | ✅ | #11 | |
+| 12 | `test/e2e` | em andamento | | |
 | 13 | `test/contract` | | | |
 | 14 | `test/perf` | | | |
 | 15 | `docs/review-decisions` | | | |
