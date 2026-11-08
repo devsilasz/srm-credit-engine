@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 6 — `feat/settlement`
+**Etapa atual:** 7 — `feat/statement`
 **Último comando:** `./mvnw verify`
-**Próximo passo:** PR da etapa 6 e depois `feat/statement`.
+**Próximo passo:** PR da etapa 7 e depois `feat/api-errors`.
 
 ## Ambiente de execução do agente
 
@@ -30,8 +30,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 3 | `feat/pricing-engine` | ✅ | #3 | |
 | 4 | `feat/persistence` | ✅ | #4 | |
 | 5 | `feat/fx-rates` | ✅ | #5 | |
-| 6 | `feat/settlement` | em andamento | | |
-| 7 | `feat/statement` | | | |
+| 6 | `feat/settlement` | ✅ | #6 | |
+| 7 | `feat/statement` | em andamento | | |
 | 8 | `feat/api-errors` | | | |
 | 9 | `feat/observability` | | | |
 | 10 | `feat/frontend` | | | |
