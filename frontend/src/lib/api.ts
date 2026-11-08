@@ -58,6 +58,13 @@ export interface StatementPage {
 /** Erro já pronto para o operador ler: o `detail` do ProblemDetail ou um texto equivalente. */
 export class ApiError extends Error {}
 
+/** Só o que veio da API é mensagem para o operador. O resto é falha interna do navegador. */
+export function readableMessage(error: Error): string {
+  return error instanceof ApiError
+    ? error.message
+    : 'A operação não foi concluída neste navegador. Recarregue a página e tente de novo.';
+}
+
 const BASE_URL: string = import.meta.env.VITE_API_URL ?? '';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
