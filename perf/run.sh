@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Carga, estresse, integridade e relatório contra o compose, sempre a partir de um banco novo:
+# AC-PERF-07 (health depois do estresse). Carga, estresse, integridade e relatório contra o compose, sempre a partir de um banco novo:
 # o smoke e o E2E deixam dados, e a carga precisa de exatamente 10.000 liquidações seed.
 set -euo pipefail
 cd "$(dirname "$0")/.."
