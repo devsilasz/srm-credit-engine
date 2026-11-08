@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 14 — `test/perf`
-**Último comando:** `perf/run.sh` → exit 0, relatório gerado
-**Próximo passo:** rodar carga e estresse reais, gerar `docs/perf/REPORT.md` e abrir o PR.
+**Etapa atual:** 15 — `docs/review-decisions`
+**Último comando:** `.cache/verify.sh` → exit 0
+**Próximo passo:** PR da etapa 15 e depois `chore/verify-all`.
 
 ## Ambiente de execução do agente
 
@@ -52,8 +52,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 11 | `chore/docker-ci` | ✅ | #11 | |
 | 12 | `test/e2e` | ✅ | #12 | levou cópias do iCloud; removidas no PR seguinte |
 | 13 | `test/contract` | ✅ | #14 | |
-| 14 | `test/perf` | em andamento | | |
-| 15 | `docs/review-decisions` | | | |
+| 14 | `test/perf` | ✅ | #15 | quebra não atingida até 800 req/s |
+| 15 | `docs/review-decisions` | em andamento | | |
 | 16 | `chore/verify-all` | | | |
 
 ## BLOCKED
