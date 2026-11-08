@@ -45,7 +45,7 @@
 | ID | Dado | Quando | Então | Tipo | Teste |
 |---|---|---|---|---|---|
 | AC-OPS-01 | máquina só com Docker, sem `.env` | `docker compose up -d --build` | os 3 serviços sobem; frontend, Swagger e health respondem sem passo manual | Operação | MANUAL: definition-of-done §2 |
-| AC-OPS-02 | liquidação concluída | `GET /actuator/prometheus` | `credit_engine_settlements_total{currency,type,outcome="success"}` incrementado | Operação | PENDENTE |
-| AC-OPS-03 | liquidação rejeitada (409/422/503) | métricas | o mesmo contador com o `outcome` correspondente | Operação | PENDENTE |
-| AC-OPS-04 | qualquer liquidação | log | linha JSON com `settlementId`, `receivableId`, `idempotencyKey`, `outcome` e `durationMs` | Operação | PENDENTE |
+| AC-OPS-02 | liquidação concluída | `GET /actuator/prometheus` | `credit_engine_settlements_total{currency,type,outcome="success"}` incrementado | Operação | `ObservabilityIT#successIncrementsCounter` |
+| AC-OPS-03 | liquidação rejeitada (409/422/503) | métricas | o mesmo contador com o `outcome` correspondente | Operação | `ObservabilityIT#rejectionsIncrementCounterWithTheirOutcome` |
+| AC-OPS-04 | qualquer liquidação | log | linha JSON com `settlementId`, `receivableId`, `idempotencyKey`, `outcome` e `durationMs` | Operação | `ObservabilityIT#logsStructuredLine, #refusedSettlementIsAlsoLogged` |
 | AC-OPS-05 | push em qualquer branch | GitHub Actions | jobs `backend` (`./mvnw verify`) e `frontend` (lint + build) verdes | Operação | MANUAL: aba Actions |

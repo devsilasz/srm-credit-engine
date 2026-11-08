@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 8 — `feat/api-errors`
+**Etapa atual:** 9 — `feat/observability`
 **Último comando:** `./mvnw verify`
-**Próximo passo:** PR da etapa 8 e depois `feat/observability`.
+**Próximo passo:** métricas e logs.
 
 ## Ambiente de execução do agente
 
@@ -13,12 +13,17 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 - `user.home` das execuções do Maven aponta para `.cache/home`, porque o Testcontainers grava `~/.testcontainers.properties`.
   A primeira execução chegou a criar esse arquivo fora do projeto; ele não existia antes e foi removido.
 
+- O projeto está no Desktop sincronizado pelo iCloud (atributo `com.apple.file-provider-domain-id` em `~/Desktop`). A sincronização criou 130 cópias `* 2.class` em `backend/target` e quebrou o `verify` local com `TestData 2 (wrong name)`, além de dois diretórios vazios em `backend/src` (`main 2`, `test 2`), já removidos.
+  Mitigação local, fora do git: `backend/target` e `.cache` são symlinks para diretórios `.nosync`. Exclusões em `.git/info/exclude`. **Recomendação ao autor:** mover o repositório para fora do Desktop/Documentos.
+
 ## Fatos para o "Log do agente" do `AI_USAGE.md`
 
 - `PricingEngineTest#largeFactorKeepsPrecision`: o agente escreveu o valor esperado `140171.21` de cabeça, com um comentário dizendo que estava conferido. O teste falhou com `137850.54`. Um cálculo independente (Python `decimal`, prec=2000) deu `137850.5359…`: o motor estava certo e o teste, errado.
 - Skill `golden-cases`: a conferência manual cita `92859,94 / 5,4321 = 17094,670…`. O valor real é `17094,6668…`. O resultado arredondado (`17094,67`) não muda.
 
 - `SettlementConcurrencyIT#sameKeyBothGetTheSameSettlement` falhou com `[201, 409]` em 1 de 5 repetições na primeira versão de `SettlementService`, escrita pelo agente. Causa: a perdedora lia a chave antes do commit da vencedora e o recebível depois dele, e respondia `409` sem reler a chave. O `@RepeatedTest(5)` pegou o bug; uma execução única poderia ter passado.
+
+- Etapa 8: o agente encadeou `verify | grep ... && git commit`, e o `&&` viu o código de saída do `grep`. O `verify` local tinha falhado (cópias do iCloud em `target/`), mas o commit e o merge do PR #8 seguiram. O CI passou no mesmo código. Depois disso, o `verify` passou a rodar por um script que devolve o código real do Maven.
 
 ## Etapas
 
@@ -32,8 +37,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 5 | `feat/fx-rates` | ✅ | #5 | |
 | 6 | `feat/settlement` | ✅ | #6 | |
 | 7 | `feat/statement` | ✅ | #7 | |
-| 8 | `feat/api-errors` | em andamento | | |
-| 9 | `feat/observability` | | | |
+| 8 | `feat/api-errors` | ✅ | #8 | merge com `verify` local vermelho por causa do iCloud; CI verde |
+| 9 | `feat/observability` | em andamento | | |
 | 10 | `feat/frontend` | | | |
 | 11 | `chore/docker-ci` | | | |
 | 12 | `test/e2e` | | | |
