@@ -4,6 +4,9 @@ import br.com.srm.creditengine.application.ReceivableService;
 import br.com.srm.creditengine.domain.model.ReceivableStatus;
 import br.com.srm.creditengine.domain.model.ReceivableType;
 import br.com.srm.creditengine.infrastructure.persistence.Receivable;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Recebíveis", description = "Cadastro mínimo do título a liquidar")
 @RestController
 @RequestMapping("/api/receivables")
 public class ReceivableController {
@@ -30,6 +34,11 @@ public class ReceivableController {
     this.receivables = receivables;
   }
 
+  @Operation(summary = "Cadastra um recebível em aberto")
+  @ApiResponse(responseCode = "201", description = "Recebível criado")
+  @ApiResponse(responseCode = "400", description = "Pedido malformado ou inválido")
+  @ApiResponse(responseCode = "404", description = "Cedente não encontrado")
+  @ApiResponse(responseCode = "422", description = "Vencimento recusado pela regra de negócio")
   @PostMapping
   public ResponseEntity<ReceivableResponse> create(
       @Valid @RequestBody CreateReceivableRequest request) {
@@ -40,6 +49,10 @@ public class ReceivableController {
         .body(ReceivableResponse.of(receivable));
   }
 
+  @Operation(summary = "Consulta um recebível")
+  @ApiResponse(responseCode = "200", description = "Recebível encontrado")
+  @ApiResponse(responseCode = "400", description = "Id malformado")
+  @ApiResponse(responseCode = "404", description = "Recebível não encontrado")
   @GetMapping("/{id}")
   public ReceivableResponse get(@PathVariable Long id) {
     return ReceivableResponse.of(receivables.get(id));

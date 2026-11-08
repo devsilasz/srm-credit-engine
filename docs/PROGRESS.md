@@ -2,9 +2,9 @@
 
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
-**Etapa atual:** 7 — `feat/statement`
+**Etapa atual:** 8 — `feat/api-errors`
 **Último comando:** `./mvnw verify`
-**Próximo passo:** PR da etapa 7 e depois `feat/api-errors`.
+**Próximo passo:** PR da etapa 8 e depois `feat/observability`.
 
 ## Ambiente de execução do agente
 
@@ -31,8 +31,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 4 | `feat/persistence` | ✅ | #4 | |
 | 5 | `feat/fx-rates` | ✅ | #5 | |
 | 6 | `feat/settlement` | ✅ | #6 | |
-| 7 | `feat/statement` | em andamento | | |
-| 8 | `feat/api-errors` | | | |
+| 7 | `feat/statement` | ✅ | #7 | |
+| 8 | `feat/api-errors` | em andamento | | |
 | 9 | `feat/observability` | | | |
 | 10 | `feat/frontend` | | | |
 | 11 | `chore/docker-ci` | | | |
