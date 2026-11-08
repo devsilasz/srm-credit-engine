@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "lint": "eslint .",
-    "e2e": "playwright test"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@fontsource-variable/libre-franklin": "5.2.5",

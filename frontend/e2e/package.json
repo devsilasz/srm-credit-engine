@@ -1,0 +1,8 @@
+{
+  "name": "srm-credit-engine-e2e",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@playwright/test": "1.50.1"
+  }
+}
