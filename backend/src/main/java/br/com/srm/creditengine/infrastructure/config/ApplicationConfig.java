@@ -56,7 +56,7 @@ public class ApplicationConfig {
     };
   }
 
-  /** Dinheiro e taxa trafegam como string: número JSON vira float binário no cliente. */
+  /** Dinheiro e taxa trafegam como string: número JSON perde precisão no cliente. */
   @Bean
   Jackson2ObjectMapperBuilderCustomizer bigDecimalAsPlainString() {
     return builder ->

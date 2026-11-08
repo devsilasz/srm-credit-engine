@@ -19,5 +19,8 @@ frontend/playwright-report/
 # Série bruta do k6 (passa de 100 MB); o agregado por degrau é versionado
 docs/perf/stress.csv
 
+# Temporários de scripts/verify-all.sh
+.verify-tmp/
+
 # Caches locais de ferramentas (Maven/npm) mantidos dentro do projeto
 .cache/
