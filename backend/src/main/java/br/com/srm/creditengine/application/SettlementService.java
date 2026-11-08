@@ -3,19 +3,27 @@ package br.com.srm.creditengine.application;
 import br.com.srm.creditengine.domain.BusinessRuleException;
 import br.com.srm.creditengine.domain.ErrorCode;
 import br.com.srm.creditengine.domain.model.PaymentCurrency;
+import br.com.srm.creditengine.domain.model.ReceivableType;
 import br.com.srm.creditengine.infrastructure.persistence.Receivable;
 import br.com.srm.creditengine.infrastructure.persistence.ReceivableRepository;
 import br.com.srm.creditengine.infrastructure.persistence.Settlement;
 import br.com.srm.creditengine.infrastructure.persistence.SettlementRepository;
+import io.micrometer.core.instrument.MeterRegistry;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Clock;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.HexFormat;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import org.hibernate.exception.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -30,6 +38,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Service
 public class SettlementService {
 
+  private static final Logger log = LoggerFactory.getLogger(SettlementService.class);
+  private static final String UNKNOWN_TYPE = "UNKNOWN";
+
   private static final Set<String> RACE_CONSTRAINTS =
       Set.of("uq_settlement_idempotency_key", "uq_settlement_receivable");
 
@@ -38,18 +49,21 @@ public class SettlementService {
   private final QuoteService quotes;
   private final TransactionTemplate transaction;
   private final Clock clock;
+  private final MeterRegistry meters;
 
   public SettlementService(
       ReceivableRepository receivables,
       SettlementRepository settlements,
       QuoteService quotes,
       TransactionTemplate transaction,
-      Clock clock) {
+      Clock clock,
+      MeterRegistry meters) {
     this.receivables = receivables;
     this.settlements = settlements;
     this.quotes = quotes;
     this.transaction = transaction;
     this.clock = clock;
+    this.meters = meters;
   }
 
   /**
@@ -57,11 +71,52 @@ public class SettlementService {
    */
   public record Outcome(Settlement settlement, boolean replayed) {}
 
+  /** Registra métrica e log de toda tentativa, inclusive das recusadas. */
   public Outcome settle(UUID idempotencyKey, Long receivableId, PaymentCurrency currency) {
+    long start = System.nanoTime();
+    AtomicReference<ReceivableType> type = new AtomicReference<>();
+    String outcomeTag = "error";
+    MDC.put("idempotencyKey", idempotencyKey.toString());
+    MDC.put("receivableId", receivableId.toString());
+    try {
+      Outcome outcome = settleResolvingRaces(idempotencyKey, receivableId, currency, type);
+      type.set(outcome.settlement().getReceivableType());
+      MDC.put("settlementId", outcome.settlement().getId().toString());
+      outcomeTag = outcome.replayed() ? "replay" : "success";
+      return outcome;
+    } catch (BusinessRuleException e) {
+      outcomeTag = e.code().name().toLowerCase(Locale.ROOT);
+      throw e;
+    } finally {
+      meters
+          .counter(
+              "credit_engine_settlements",
+              "currency",
+              currency.name(),
+              "type",
+              type.get() == null ? UNKNOWN_TYPE : type.get().name(),
+              "outcome",
+              outcomeTag)
+          .increment();
+      log.atInfo()
+          .addKeyValue("outcome", outcomeTag)
+          .addKeyValue("durationMs", Duration.ofNanos(System.nanoTime() - start).toMillis())
+          .log("Liquidação processada");
+      MDC.remove("idempotencyKey");
+      MDC.remove("receivableId");
+      MDC.remove("settlementId");
+    }
+  }
+
+  private Outcome settleResolvingRaces(
+      UUID idempotencyKey,
+      Long receivableId,
+      PaymentCurrency currency,
+      AtomicReference<ReceivableType> type) {
     String requestHash = requestHash(receivableId, currency);
     try {
       return transaction.execute(
-          status -> settleInTransaction(idempotencyKey, requestHash, receivableId, currency));
+          status -> settleInTransaction(idempotencyKey, requestHash, receivableId, currency, type));
     } catch (ObjectOptimisticLockingFailureException e) {
       return resolveLostRace(idempotencyKey, requestHash);
     } catch (DataIntegrityViolationException e) {
@@ -82,7 +137,11 @@ public class SettlementService {
   }
 
   private Outcome settleInTransaction(
-      UUID idempotencyKey, String requestHash, Long receivableId, PaymentCurrency currency) {
+      UUID idempotencyKey,
+      String requestHash,
+      Long receivableId,
+      PaymentCurrency currency,
+      AtomicReference<ReceivableType> type) {
     var existing = settlements.findByIdempotencyKey(idempotencyKey);
     if (existing.isPresent()) {
       return replay(existing.get(), requestHash);
@@ -96,6 +155,7 @@ public class SettlementService {
                     new BusinessRuleException(
                         ErrorCode.RECEIVABLE_NOT_FOUND,
                         "Recebível " + receivableId + " não encontrado."));
+    type.set(receivable.getType());
     // Pode ser a mesma chave: a leitura acima veio antes do commit da vencedora, e esta veio
     // depois.
     if (receivable.isSettled()) {
