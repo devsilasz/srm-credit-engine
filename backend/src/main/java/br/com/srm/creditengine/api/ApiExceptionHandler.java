@@ -5,6 +5,8 @@ import br.com.srm.creditengine.domain.BusinessRuleException;
 import br.com.srm.creditengine.domain.ErrorCode;
 import java.net.URI;
 import java.util.Locale;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -17,6 +19,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+  private static final Logger log = LoggerFactory.getLogger(ApiExceptionHandler.class);
+
   @ExceptionHandler(BusinessRuleException.class)
   ResponseEntity<ProblemDetail> handleBusinessRule(BusinessRuleException e) {
     HttpStatus status = statusOf(e.code());
@@ -26,6 +30,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
           HttpHeaders.RETRY_AFTER, String.valueOf(FxRateService.RETRY_AFTER.toSeconds()));
     }
     return response.body(problem(status, e.code().name(), e.getMessage()));
+  }
+
+  /** Sem mensagem interna no corpo: o detalhe vai só para o log, com stack trace. */
+  @ExceptionHandler(Exception.class)
+  ResponseEntity<ProblemDetail> handleUnexpected(Exception e) {
+    log.error("Erro inesperado", e);
+    return ResponseEntity.internalServerError()
+        .body(
+            problem(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "INTERNAL_ERROR",
+                "Erro interno. A operação não foi concluída; nada foi gravado."));
   }
 
   /** Exaustivo de propósito: um {@code ErrorCode} novo sem status não compila. */

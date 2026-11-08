@@ -11,28 +11,26 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import br.com.srm.creditengine.AbstractIT;
+import br.com.srm.creditengine.TestData;
 import br.com.srm.creditengine.application.FxRateProvider;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 class FxResilienceIT extends AbstractIT {
 
   @MockitoBean FxRateProvider provider;
   @Autowired CircuitBreaker fxProviderCircuitBreaker;
-  @Autowired TestRestTemplate rest;
-  @Autowired JdbcTemplate jdbc;
 
   @BeforeEach
   void closeCircuit() {
@@ -89,6 +87,20 @@ class FxResilienceIT extends AbstractIT {
     verify(provider, never()).fetchRate(anyString());
     assertThat(rest.getForObject("/actuator/prometheus", String.class))
         .contains("resilience4j_circuitbreaker_state{name=\"fx-provider\",state=\"open\"} 1.0");
+  }
+
+  @Test
+  @DisplayName("AC-FX-10 provedor fora, com taxa ainda válida: USD liquida sem chamar o provedor")
+  void settlementDoesNotDependOnProvider() {
+    doThrow(new IllegalStateException("provedor fora")).when(provider).fetchRate(anyString());
+    long fxRateId = TestData.fxRate(jdbc, "5.4321", clock.instant());
+    long receivable = openReceivable();
+
+    ResponseEntity<JsonNode> response = settle(UUID.randomUUID().toString(), receivable, "USD");
+
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    assertThat(response.getBody().get("fxRateId").asLong()).isEqualTo(fxRateId);
+    verify(provider, never()).fetchRate(anyString());
   }
 
   @Test

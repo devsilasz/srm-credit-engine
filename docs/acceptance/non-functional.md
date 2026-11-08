@@ -16,7 +16,7 @@
 | ID | Dado | Quando | Então | Tipo | Teste |
 |---|---|---|---|---|---|
 | AC-SEC-01 | — | revisão de código | zero SQL concatenado; todo SQL nativo usa parâmetros | Segurança | MANUAL: grep |
-| AC-SEC-02 | `receivableId = "1 OR 1=1"` | `POST /api/settlements` | `400` (tipo inválido), nada executado | Segurança | PENDENTE |
+| AC-SEC-02 | `receivableId = "1 OR 1=1"` | `POST /api/settlements` | `400` (tipo inválido), nada executado | Segurança | `SettlementApiIT#sqlInjectionAttemptIsRefused` |
 | AC-SEC-03 | payload > 64 KB | qualquer POST | `413`/`400` | Segurança | PENDENTE |
 | AC-SEC-04 | — | inspeção do compose | credenciais do banco vêm de variável de ambiente (com padrão só para dev); nenhum segredo real versionado | Segurança | MANUAL |
 | AC-SEC-05 | ⚠️ DECISÃO DO AUTOR | — | autenticação e autorização fora do escopo, justificadas em DECISIONS.md (o que seria: OAuth2/JWT, papel OPERADOR vs. AUDITOR) | Segurança | MANUAL: DECISIONS.md |

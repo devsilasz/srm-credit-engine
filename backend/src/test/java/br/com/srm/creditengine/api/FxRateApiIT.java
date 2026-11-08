@@ -11,15 +11,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 class FxRateApiIT extends AbstractIT {
-
-  @Autowired TestRestTemplate rest;
-  @Autowired JdbcTemplate jdbc;
 
   private JsonNode current() {
     return rest.getForObject("/api/fx-rates/current?pair=USD-BRL", JsonNode.class);

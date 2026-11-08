@@ -10,20 +10,10 @@ import java.time.LocalDate;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 class QuoteApiIT extends AbstractIT {
-
-  @Autowired TestRestTemplate rest;
-  @Autowired JdbcTemplate jdbc;
-
-  private LocalDate today() {
-    return LocalDate.now(clock);
-  }
 
   private ResponseEntity<JsonNode> quote(
       String faceValue, LocalDate dueDate, String type, String currency) {
