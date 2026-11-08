@@ -1,0 +1,19 @@
+package br.com.srm.creditengine.domain;
+
+/** Recusas de regra de negócio. O mapeamento para status HTTP fica na camada de API. */
+public enum ErrorCode {
+  ASSIGNOR_NOT_FOUND,
+  RECEIVABLE_NOT_FOUND,
+  SETTLEMENT_NOT_FOUND,
+  FX_RATE_NOT_FOUND,
+  RECEIVABLE_ALREADY_SETTLED,
+  IDEMPOTENCY_KEY_REQUIRED,
+  IDEMPOTENCY_KEY_REUSED,
+  DUE_DATE_NOT_IN_FUTURE,
+  DUE_DATE_TOO_FAR,
+  PRESENT_VALUE_TOO_SMALL,
+  INVALID_FX_RATE,
+  INVALID_FILTER,
+  FX_RATE_UNAVAILABLE,
+  FX_PROVIDER_UNAVAILABLE
+}
