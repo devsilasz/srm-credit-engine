@@ -57,6 +57,8 @@ trap 'rm -rf "$WORK"' EXIT
 
 # ---------------------------------------------------------------------------------------------
 step "1. Backend: ./mvnw verify (golden cases, integração, contrato, cobertura, Spotless)"
+# Sempre recompila: uma IDE aberta pode ter gravado em target/classes com outro compilador.
+rm -rf backend/target/classes backend/target/test-classes backend/target/maven-status
 (cd backend && ./mvnw -B verify) || fail "./mvnw verify"
 
 step "1b. Frontend: lint e build em contêiner"

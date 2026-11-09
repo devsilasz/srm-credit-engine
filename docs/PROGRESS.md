@@ -66,6 +66,7 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 17 | `fix/nginx-host-header` | ✅ | #18 | `403` no painel, encontrado pelo autor; `verify-all.sh --skip-perf` verde, sem repetir carga e estresse |
 | 18 | `fix/verify-all-origin-check` | ✅ | #19 | asserção do PR #18 não testava nada |
 | 19 | `docs/coverage-report` | ✅ | #20 | cobertura por camada em `docs/coverage/REPORT.md`, pedido do autor |
+| 20 | `test/raise-layer-coverage` | em andamento | | cobertura de unitário, contrato e E2E, pedido do autor |
 
 ## BLOCKED
 

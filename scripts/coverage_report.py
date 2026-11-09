@@ -198,6 +198,11 @@ def main():
 
     contract, hit, declared = contract_table()
     unit, integration = test_classes()
+    contract_note = (
+        "Todas as combinações da tabela foram exercitadas."
+        if hit == declared
+        else "Todo status \"não exercitado aqui\" está declarado no OpenAPI, mas o formato dessas respostas não é conferido contra o contrato."
+    )
     report = f"""# Relatório de cobertura
 
 > Gerado por `scripts/coverage-report.sh` a partir dos CSVs desta pasta. Nenhum número aqui é digitado à mão.
@@ -209,6 +214,15 @@ Medido em {date}, no commit `{commit}`. Cada camada rodou sozinha, em uma execu�
 {summary_table(data, tests)}
 
 As camadas se sobrepõem, então os percentuais não somam. A cobertura do E2E é só do backend, com o painel e o Nginx na frente. {variation_note}
+
+Como ler: a meta de 80% faz sentido na última linha, que é o que o projeto todo garante. Cada camada isolada mede algo diferente, e o que vale olhar nela é o seu próprio alvo:
+
+| Camada | O que ela precisa provar | Onde conferir |
+|---|---|---|
+| Unitário | Regras e decisões, sem banco nem rede | Tabela por classe, abaixo |
+| Integração | O que só existe com banco real: transação, lock, trigger, SQL | `AC-SET`, `AC-STM` e `AC-FX`, abaixo |
+| Contrato | Toda operação e status conforme o OpenAPI | Seção de contrato, abaixo |
+| E2E | O fluxo do operador no navegador | `AC-UI`, abaixo |
 
 O que roda em cada camada:
 
@@ -233,7 +247,7 @@ Linhas de código não dizem o que importa num contrato. Aqui, a medida é quais
 
 {contract}
 
-Todo status "não exercitado aqui" está declarado no OpenAPI. O comportamento dos que não passam pelo validador é coberto pelos testes de integração, mas o formato da resposta deles não é conferido contra o contrato.
+{contract_note}
 
 ## Cobertura de linhas por pacote
 

@@ -22,6 +22,18 @@ class MockFxRateProviderTest {
   }
 
   @Test
+  void interruptedCallFailsAndKeepsTheInterruptFlag() {
+    var slow = new FxProperties.Mock(new BigDecimal("5.4321"), Duration.ofSeconds(30), false);
+    var provider =
+        new MockFxRateProvider(new FxProperties(Duration.ofHours(1), Duration.ofSeconds(2), slow));
+    Thread.currentThread().interrupt();
+
+    assertThatThrownBy(() -> provider.fetchRate("USD-BRL"))
+        .isInstanceOf(IllegalStateException.class);
+    assertThat(Thread.interrupted()).isTrue();
+  }
+
+  @Test
   void failsWhenConfiguredTo() {
     assertThatThrownBy(() -> provider(true).fetchRate("USD-BRL"))
         .isInstanceOf(IllegalStateException.class);

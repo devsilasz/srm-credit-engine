@@ -175,4 +175,38 @@ test('fluxo do operador: simular, liquidar, repetir com segurança e conferir o 
     await expect(page.getByTestId('page-status')).toContainText('Página 2 de');
     await expect(page.getByLabel('Moeda', { exact: true })).toHaveValue('BRL');
   });
+
+  await test.step('Liquidação em dólar: valor e câmbio chegam ao carimbo e ao grid', async () => {
+    await page.goto('/');
+    await page.getByLabel('Cedente', { exact: true }).first().selectOption({ label: ASSIGNOR });
+    await faceValue.fill('100000,00');
+    await dueDate.fill(threeMonths);
+    await page.getByLabel('Dólar').check();
+    await expect(page.getByTestId('present-value')).toHaveText('US$ 17.094,67');
+    await settleButton.click();
+    await expect(page.getByTestId('settled')).toContainText('US$ 17.094,67');
+
+    await page.getByLabel('Moeda', { exact: true }).selectOption('USD');
+    await expect(page).toHaveURL(/currency=USD/);
+    const firstRow = page.getByTestId('statement').locator('tbody tr').first();
+    await expect(firstRow).toContainText('US$ 17.094,67');
+    await expect(firstRow).toContainText('5,4321');
+  });
+
+  await test.step('Filtro de período: hoje traz a liquidação, e um período antigo fica vazio', async () => {
+    const today = todayInBusinessZone();
+    await page.getByLabel('De', { exact: true }).fill(today);
+    await page.getByLabel('Até', { exact: true }).fill(today);
+    await expect(page).toHaveURL(new RegExp(`from=${today}`));
+    await expect(page.getByTestId('statement').locator('tbody tr').first()).toBeVisible();
+
+    await page.getByLabel('De', { exact: true }).fill('2020-01-01');
+    await page.getByLabel('Até', { exact: true }).fill('2020-01-31');
+    await expect(page.getByText('Nenhuma liquidação com estes filtros.')).toBeVisible();
+  });
+
+  await test.step('A documentação prometida no README está publicada', async () => {
+    await page.goto(`${API_URL}/swagger-ui.html`);
+    await expect(page.getByText('SRM Credit Engine API').first()).toBeVisible();
+  });
 });
