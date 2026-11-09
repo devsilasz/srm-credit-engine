@@ -48,6 +48,28 @@ class ReceivableApiIT extends AbstractIT {
   }
 
   @Test
+  void invalidBodyIs400AndCreatesNothing() {
+    long before = jdbc.queryForObject("SELECT count(*) FROM receivable", Long.class);
+    Map<String, Object> body =
+        Map.of(
+            "assignorId",
+            1,
+            "type",
+            "CHEQUE_PRE_DATADO",
+            "faceValue",
+            "-1.00",
+            "dueDate",
+            today().plusMonths(2).toString());
+
+    var response = rest.postForEntity("/api/receivables", body, JsonNode.class);
+
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    assertThat(response.getBody().get("errors").findValuesAsText("field")).contains("faceValue");
+    assertThat(jdbc.queryForObject("SELECT count(*) FROM receivable", Long.class))
+        .isEqualTo(before);
+  }
+
+  @Test
   void dueDateNotInFutureIs422() {
     var response =
         rest.postForEntity("/api/receivables", body(1, today().toString()), JsonNode.class);
