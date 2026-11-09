@@ -36,6 +36,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 - Pós-entrega: o autor encontrou `403` ao usar o painel em `localhost:3000`. Causa em `frontend/nginx.conf` (`$host` sem porta). O `verify-all.sh` e o E2E não pegaram porque não usavam a porta publicada com `Origin`. Detalhes em `AI_USAGE.md`.
 
+- Pós-entrega: a asserção de `Origin` do PR #18 não testava nada (expansão de chaves no bash 3.2 fazia `$2` e `$3` coincidirem). Corrigida no PR #19, com `assert_eq` exigindo 3 argumentos.
+
 ## Etapas
 
 | # | Branch | Status | PR | Observação |
@@ -58,6 +60,7 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 15 | `docs/review-decisions` | ✅ | #16 | |
 | 16 | `chore/verify-all` | ✅ | #17 | `scripts/verify-all.sh` sem flags → exit 0 |
 | 17 | `fix/nginx-host-header` | ✅ | #18 | `403` no painel, encontrado pelo autor; `verify-all.sh --skip-perf` verde, sem repetir carga e estresse |
+| 18 | `fix/verify-all-origin-check` | ✅ | #19 | asserção do PR #18 não testava nada |
 
 ## BLOCKED
 
