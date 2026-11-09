@@ -26,6 +26,8 @@ set -E
 
 # assert_eq <descrição> <obtido> <esperado>
 assert_eq() {
+  # A expansão de chaves do bash 3.2 pode multiplicar um argumento e fazer $2 e $3 coincidirem.
+  [ $# -eq 3 ] || fail "assert_eq recebeu $# argumentos em vez de 3: $*"
   if [ "$2" = "$3" ]; then
     echo "ok   $1: $2"
   else
@@ -132,9 +134,11 @@ echo "ok   métricas de negócio expostas"
 assert_eq "frontend" "$(curl -fsS $FRONT -o /dev/null -w '%{http_code}')" "200"
 assert_eq "proxy /api do Nginx" "$(curl -fsS $FRONT/api/assignors -o /dev/null -w '%{http_code}')" "200"
 # O navegador só envia Origin em POST: é esse caminho que o CORS do backend pode recusar.
-assert_eq "POST pelo Nginx com Origin do navegador" "$(curl -sS -X POST $FRONT/api/pricing/quote \
+# Em variável: dentro de "$(...)" como argumento, o bash 3.2 expandiria as chaves deste JSON.
+ORIGIN_STATUS=$(curl -sS -X POST $FRONT/api/pricing/quote \
   -H 'Content-Type: application/json' -H "Origin: $FRONT" \
-  -d "{$QUOTE,\"paymentCurrency\":\"BRL\"}" -o /dev/null -w '%{http_code}')" "200"
+  -d "{$QUOTE,\"paymentCurrency\":\"BRL\"}" -o /dev/null -w '%{http_code}')
+assert_eq "POST pelo Nginx com Origin do navegador" "$ORIGIN_STATUS" "200"
 
 step "3b. E2E: Playwright contra o compose"
 docker compose --profile e2e run --rm --build e2e || fail "fluxo do operador no Playwright"
