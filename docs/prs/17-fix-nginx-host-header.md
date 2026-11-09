@@ -30,6 +30,6 @@ O E2E com a nova URL ficou vermelho antes da correção e verde depois.
 AC-UI-01 a AC-UI-08 e AC-UI-11, agora pela porta publicada; AC-OPS-01.
 
 ## Riscos / fora de escopo
-Carga e estresse não foram repetidos: eles falam direto com `backend:8080`, sem passar pelo Nginx. `docs/perf/REPORT.md` continua sendo a execução do commit `583906b`.
+Carga e estresse não foram repetidos: eles falam direto com `backend:8080`, sem passar pelo Nginx. `docs/perf/REPORT.md` continua sendo a execução do commit `ccd35f2`.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
