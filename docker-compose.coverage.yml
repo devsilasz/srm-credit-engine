@@ -1,0 +1,12 @@
+# Só para scripts/coverage-report.sh: mede quais linhas do backend o E2E executa.
+services:
+  backend:
+    environment:
+      JAVA_TOOL_OPTIONS: -javaagent:/jacoco/jacocoagent.jar=destfile=/jacoco/e2e.exec,append=false
+    volumes:
+      - ./backend/target/jacoco-tools:/jacoco
+
+  e2e:
+    # Não sobrescreve as telas versionadas em docs/screenshots.
+    volumes:
+      - ./backend/target/jacoco-tools/screenshots:/results

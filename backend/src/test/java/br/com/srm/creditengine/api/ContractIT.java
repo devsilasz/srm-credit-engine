@@ -18,11 +18,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,6 +60,8 @@ class ContractIT extends AbstractIT {
           Map.entry("post /api/fx-rates/refresh", Set.of("201", "503")),
           Map.entry("get /api/fx-rates/current", Set.of("200", "404")),
           Map.entry("get /api/assignors", Set.of("200")));
+
+  private static final Set<String> EXERCISED = new TreeSet<>();
 
   @MockitoBean FxRateProvider provider;
   @Autowired CircuitBreaker fxProviderCircuitBreaker;
@@ -107,7 +115,29 @@ class ContractIT extends AbstractIT {
   private ResponseEntity<String> exchange(
       HttpMethod method, String path, String query, Object body, HttpHeaders headers) {
     String url = query == null ? path : path + "?" + query;
-    return rest.exchange(url, method, new HttpEntity<>(body, headers), String.class);
+    ResponseEntity<String> response =
+        rest.exchange(url, method, new HttpEntity<>(body, headers), String.class);
+    String operation =
+        method.name().toLowerCase(Locale.ROOT) + " " + path.replaceAll("/\\d+", "/{id}");
+    EXERCISED.add(operation + "," + response.getStatusCode().value());
+    return response;
+  }
+
+  /**
+   * Evidência para docs/coverage: cada combinação de operação e status, declarada ou exercitada.
+   */
+  @AfterAll
+  static void writeOperationCoverage() throws IOException {
+    Set<String> all = new TreeSet<>(EXERCISED);
+    EXPECTED_STATUSES.forEach(
+        (operation, statuses) -> statuses.forEach(status -> all.add(operation + "," + status)));
+    List<String> lines = new ArrayList<>(List.of("operation,status,declared,exercised"));
+    for (String entry : all) {
+      String[] parts = entry.split(",");
+      boolean declared = EXPECTED_STATUSES.getOrDefault(parts[0], Set.of()).contains(parts[1]);
+      lines.add(entry + "," + declared + "," + EXERCISED.contains(entry));
+    }
+    Files.write(Path.of("target/contract-operations.csv"), lines);
   }
 
   private static SimpleResponse simpleResponse(ResponseEntity<String> response) {

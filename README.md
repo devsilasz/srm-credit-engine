@@ -38,6 +38,7 @@ curl -i -X POST http://localhost:8080/api/fx-rates/refresh    # 503 com Retry-Af
 | [`DECISIONS.md`](DECISIONS.md) | O que foi cortado ou simplificado, e por quê |
 | [`AI_USAGE.md`](AI_USAGE.md) | Como a IA foi usada, com o log do que errou |
 | [`docs/acceptance/`](docs/acceptance/README.md) | Critérios de aceite, cada um ligado ao seu teste |
+| [`docs/coverage/REPORT.md`](docs/coverage/REPORT.md) | Cobertura por camada: unitário, integração, contrato e E2E |
 | [`docs/perf/REPORT.md`](docs/perf/REPORT.md) | Resultado da carga e do estresse |
 | [`docs/prs/`](docs/prs) | Descrição de cada PR, com o porquê |
 
@@ -162,7 +163,19 @@ scripts/verify-all.sh                        # tudo, a partir de um banco zerado
 | E2E | Playwright contra o compose | Painel, liquidação e grid quebrados de ponta a ponta |
 | Carga e estresse | k6 e checagem de integridade em SQL | Regressão de latência e corrupção de dados sob pressão |
 
-**Cobertura real (unitários e integração mesclados, de `target/site/jacoco-merged/jacoco.csv`):** 98,5% de linhas no projeto; 100% de linhas e de branches em `domain.pricing`. O build falha abaixo de 70% de linhas no projeto ou de 90% de linhas e branches em `domain.pricing`.
+**Cobertura medida, por camada** (detalhe por pacote, classe e operação em [`docs/coverage/REPORT.md`](docs/coverage/REPORT.md)):
+
+<!-- coverage:start -->
+| Camada | Testes | Linhas | Branches |
+|---|---:|---:|---:|
+| Unitário | 27 | 12,0% (87/725) | 12,1% (18/149) |
+| Integração | 125 | 92,0% (667/725) | 86,6% (129/149) |
+| Contrato | 11 | 85,8% (622/725) | 64,4% (96/149) |
+| E2E | 1 | 71,3% (468/656) | 49,7% (74/149) |
+| Unitário + integração + contrato | 109 | 98,5% (714/725) | 89,3% (133/149) |
+<!-- coverage:end -->
+
+O build falha abaixo de 70% de linhas no projeto ou de 90% de linhas e branches em `domain.pricing`.
 
 Carga e estresse rodam localmente, não no CI, e os números estão em [`docs/perf/REPORT.md`](docs/perf/REPORT.md).
 
