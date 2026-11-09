@@ -1,6 +1,6 @@
 credit_engine_pricing_duration_seconds{quantile="0.5"} 3.8656E-5
-credit_engine_pricing_duration_seconds{quantile="0.95"} 6.3232E-5
-credit_engine_pricing_duration_seconds{quantile="0.99"} 1.18528E-4
-credit_engine_pricing_duration_seconds_count 3754
-credit_engine_pricing_duration_seconds_sum 0.176621701
-credit_engine_pricing_duration_seconds_max 7.04334E-4
+credit_engine_pricing_duration_seconds{quantile="0.95"} 5.7088E-5
+credit_engine_pricing_duration_seconds{quantile="0.99"} 9.3952E-5
+credit_engine_pricing_duration_seconds_count 3753
+credit_engine_pricing_duration_seconds_sum 0.180906601
+credit_engine_pricing_duration_seconds_max 2.58584E-4

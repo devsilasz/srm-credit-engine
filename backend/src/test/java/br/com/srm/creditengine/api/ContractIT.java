@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.when;
 
 import br.com.srm.creditengine.AbstractIT;
 import br.com.srm.creditengine.TestData;
@@ -19,8 +20,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -337,6 +340,111 @@ class ContractIT extends AbstractIT {
 
     doThrow(new IllegalStateException("provedor fora")).when(provider).fetchRate(anyString());
     assertConforms(HttpMethod.POST, "/api/fx-rates/refresh", null, null, new HttpHeaders(), 503);
+  }
+
+  @Test
+  void receivableErrors() {
+    Map<String, Object> invalid =
+        Map.of(
+            "assignorId",
+            1,
+            "type",
+            "DUPLICATA_MERCANTIL",
+            "faceValue",
+            "-1.00",
+            "dueDate",
+            today().plusMonths(3).toString());
+    Map<String, Object> unknownAssignor =
+        Map.of(
+            "assignorId",
+            999999,
+            "type",
+            "DUPLICATA_MERCANTIL",
+            "faceValue",
+            "100.00",
+            "dueDate",
+            today().plusMonths(3).toString());
+    Map<String, Object> dueToday =
+        Map.of(
+            "assignorId",
+            1,
+            "type",
+            "DUPLICATA_MERCANTIL",
+            "faceValue",
+            "100.00",
+            "dueDate",
+            today().toString());
+
+    assertResponseConforms(
+        HttpMethod.POST, "/api/receivables", null, invalid, new HttpHeaders(), 400);
+    assertConforms(
+        HttpMethod.POST, "/api/receivables", null, unknownAssignor, new HttpHeaders(), 404);
+    assertConforms(HttpMethod.POST, "/api/receivables", null, dueToday, new HttpHeaders(), 422);
+  }
+
+  @Test
+  @DisplayName("Sem taxa vigente: 404 na consulta e 503 onde a precificação depende dela")
+  void staleRate() {
+    long receivable = openReceivable(TestData.assignor(jdbc), today().plusMonths(12));
+    TestData.fxRate(jdbc, "5.4321", clock.instant());
+    clock.advance(Duration.ofDays(100));
+
+    assertConforms(
+        HttpMethod.GET, "/api/fx-rates/current", "pair=USD-BRL", null, new HttpHeaders(), 404);
+    assertConforms(
+        HttpMethod.POST,
+        "/api/pricing/quote",
+        null,
+        quoteBody(today().plusMonths(3).toString(), "USD"),
+        new HttpHeaders(),
+        503);
+    assertConforms(
+        HttpMethod.POST,
+        "/api/settlements",
+        null,
+        settleBody(receivable, "USD"),
+        withKey(UUID.randomUUID().toString()),
+        503);
+  }
+
+  @Test
+  void fxRateWithTooManyDecimalsIsRefused() {
+    assertResponseConforms(
+        HttpMethod.POST,
+        "/api/fx-rates",
+        null,
+        Map.of("pair", "USD-BRL", "rate", "5.123456789", "validFrom", clock.instant().toString()),
+        new HttpHeaders(),
+        400);
+  }
+
+  @Test
+  void refreshStoresTheProviderRate() {
+    when(provider.fetchRate(anyString())).thenReturn(new BigDecimal("5.4321"));
+
+    assertConforms(HttpMethod.POST, "/api/fx-rates/refresh", null, null, new HttpHeaders(), 201);
+  }
+
+  @Test
+  void statementWithEveryFilter() {
+    long assignor = TestData.assignor(jdbc);
+    TestData.usdSettlement(jdbc, assignor, clock.instant());
+    String today = today().toString();
+
+    assertConforms(
+        HttpMethod.GET,
+        "/api/settlements",
+        "from="
+            + today
+            + "&to="
+            + today
+            + "&assignorId="
+            + assignor
+            + "&currency=USD&sort=faceValue,asc",
+        null,
+        new HttpHeaders(),
+        200);
+    assertConforms(HttpMethod.GET, "/api/settlements", "sort=amount", null, new HttpHeaders(), 400);
   }
 
   @Test

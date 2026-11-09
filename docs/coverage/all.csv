@@ -1,6 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 srm-credit-engine,br.com.srm.creditengine.application,QuoteService,0,82,0,4,0,14,0,5,0,3
-srm-credit-engine,br.com.srm.creditengine.application,SettlementService,24,343,5,13,4,83,4,20,0,15
+srm-credit-engine,br.com.srm.creditengine.application,SettlementService,7,360,0,18,2,85,0,24,0,15
 srm-credit-engine,br.com.srm.creditengine.application,FxRateService,0,134,0,4,0,26,0,15,0,13
 srm-credit-engine,br.com.srm.creditengine.application,SettlementService.Outcome,0,9,0,0,0,1,0,1,0,1
 srm-credit-engine,br.com.srm.creditengine.application,ReceivableService,0,66,0,2,0,15,0,5,0,4
@@ -10,7 +10,7 @@ srm-credit-engine,br.com.srm.creditengine.domain.model,ReceivableType,0,15,0,0,0
 srm-credit-engine,br.com.srm.creditengine.domain.model,ReceivableStatus,0,15,0,0,0,3,0,1,0,1
 srm-credit-engine,br.com.srm.creditengine.domain.model,PaymentCurrency,0,26,0,2,0,5,0,4,0,3
 srm-credit-engine,br.com.srm.creditengine.infrastructure.fx,FxRateRefreshJob,0,26,0,0,0,11,0,4,0,4
-srm-credit-engine,br.com.srm.creditengine.infrastructure.fx,MockFxRateProvider,9,25,0,2,3,8,0,3,0,2
+srm-credit-engine,br.com.srm.creditengine.infrastructure.fx,MockFxRateProvider,0,34,0,2,0,11,0,3,0,2
 srm-credit-engine,br.com.srm.creditengine.infrastructure.fx,ResilientFxRateClient,0,83,0,4,0,20,0,8,0,6
 srm-credit-engine,br.com.srm.creditengine.domain.pricing,TermCalculator,0,38,0,6,0,8,0,4,0,1
 srm-credit-engine,br.com.srm.creditengine.domain.pricing,ChequePreDatadoStrategy,0,13,0,0,0,4,0,4,0,4
@@ -36,9 +36,9 @@ srm-credit-engine,br.com.srm.creditengine.api,ReceivableController.CreateReceiva
 srm-credit-engine,br.com.srm.creditengine.api,StatementController.StatementPage,0,18,0,0,0,1,0,1,0,1
 srm-credit-engine,br.com.srm.creditengine.api,FxRateController.FxRateResponse,0,32,0,0,0,3,0,2,0,2
 srm-credit-engine,br.com.srm.creditengine.api,ApiExceptionHandler.FieldProblem,0,9,0,0,0,1,0,1,0,1
-srm-credit-engine,br.com.srm.creditengine.api,PayloadLimitFilter.BufferedBodyRequest.new ServletInputStream() {...},15,17,2,0,3,3,4,3,3,3
+srm-credit-engine,br.com.srm.creditengine.api,PayloadLimitFilter.BufferedBodyRequest.new ServletInputStream() {...},0,32,0,2,0,6,0,7,0,6
 srm-credit-engine,br.com.srm.creditengine.api,ReceivableController.ReceivableResponse,0,42,0,0,0,9,0,2,0,2
-srm-credit-engine,br.com.srm.creditengine.api,PayloadLimitFilter.BufferedBodyRequest,11,19,0,0,1,5,1,2,1,2
+srm-credit-engine,br.com.srm.creditengine.api,PayloadLimitFilter.BufferedBodyRequest,0,30,0,0,0,6,0,3,0,3
 srm-credit-engine,br.com.srm.creditengine.api,ApiExceptionHandler,0,294,5,18,0,72,5,25,0,17
 srm-credit-engine,br.com.srm.creditengine.api,QuoteController.QuoteResponse,0,87,0,8,0,15,0,6,0,2
 srm-credit-engine,br.com.srm.creditengine.domain,BusinessRuleException,0,10,0,0,0,4,0,2,0,2
@@ -50,4 +50,4 @@ srm-credit-engine,br.com.srm.creditengine.infrastructure.persistence,StatementQu
 srm-credit-engine,br.com.srm.creditengine.infrastructure.persistence,Receivable,0,57,0,2,0,19,0,12,0,11
 srm-credit-engine,br.com.srm.creditengine.infrastructure.persistence,Settlement,0,126,0,4,0,36,0,21,0,19
 srm-credit-engine,br.com.srm.creditengine.infrastructure.persistence,FxRate,0,36,0,0,0,13,0,7,0,7
-srm-credit-engine,br.com.srm.creditengine.infrastructure.persistence,StatementQuery,2,256,3,17,0,52,3,17,0,10
+srm-credit-engine,br.com.srm.creditengine.infrastructure.persistence,StatementQuery,0,258,0,20,0,52,0,20,0,10

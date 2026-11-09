@@ -3,7 +3,7 @@
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 **Etapa atual:** concluído; só resta a revisão do autor
-**Último comando anterior ao relatório de cobertura:** `scripts/verify-all.sh --skip-perf` → passos verdes (exit 2 por causa da flag). A última execução sem flags foi no commit `ccd35f2`, antes da correção do Nginx.
+**Último comando:** `scripts/verify-all.sh` sem flags, no commit `16367b7` → exit 0 (`VERIFICAÇÃO COMPLETA`).
 **Próximo passo (autor):** preencher as seções 1 a 3 de `AI_USAGE.md`, assumir os critérios em `docs/acceptance/README.md` e revisar a seção 5 do `SPEC.md`.
 
 ## Ambiente de execução do agente
@@ -66,6 +66,7 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 17 | `fix/nginx-host-header` | ✅ | #18 | `403` no painel, encontrado pelo autor; `verify-all.sh --skip-perf` verde, sem repetir carga e estresse |
 | 18 | `fix/verify-all-origin-check` | ✅ | #19 | asserção do PR #18 não testava nada |
 | 19 | `docs/coverage-report` | ✅ | #20 | cobertura por camada em `docs/coverage/REPORT.md`, pedido do autor |
+| 20 | `test/raise-layer-coverage` | ✅ | #21 | cobertura de unitário, contrato e E2E, pedido do autor; `verify-all.sh` sem flags → exit 0 |
 
 ## BLOCKED
 

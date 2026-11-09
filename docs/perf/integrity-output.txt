@@ -4,7 +4,7 @@
  liquidacao_com_soma_incoerente        |     0
  idempotency_key_duplicada             |     0
  liquidacoes_com_recebivel_nao_settled |     0
- recebiveis_settled_sem_liquidacao     |     0
  recebiveis_com_mais_de_uma_liquidacao |     0
+ recebiveis_settled_sem_liquidacao     |     0
 (6 rows)
 
