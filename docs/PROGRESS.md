@@ -3,7 +3,7 @@
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 **Etapa atual:** concluído; só resta a revisão do autor
-**Último comando:** `scripts/verify-all.sh --skip-perf` → passos verdes (exit 2 por causa da flag). A última execução sem flags foi no commit `583906b`, antes da correção do Nginx.
+**Último comando:** `scripts/verify-all.sh --skip-perf` → passos verdes (exit 2 por causa da flag). A última execução sem flags foi no commit `ccd35f2`, antes da correção do Nginx.
 **Próximo passo (autor):** preencher as seções 1 a 3 de `AI_USAGE.md`, assumir os critérios em `docs/acceptance/README.md` e revisar a seção 5 do `SPEC.md`.
 
 ## Ambiente de execução do agente
@@ -37,6 +37,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 - Pós-entrega: o autor encontrou `403` ao usar o painel em `localhost:3000`. Causa em `frontend/nginx.conf` (`$host` sem porta). O `verify-all.sh` e o E2E não pegaram porque não usavam a porta publicada com `Origin`. Detalhes em `AI_USAGE.md`.
 
 - Pós-entrega: a asserção de `Origin` do PR #18 não testava nada (expansão de chaves no bash 3.2 fazia `$2` e `$3` coincidirem). Corrigida no PR #19, com `assert_eq` exigindo 3 argumentos.
+
+- Pós-entrega: a pedido do autor, o histórico da `main` foi reescrito para remover a coautoria das mensagens e deixar `devsilasz` como autor e committer de todos os commits, inclusive os merges. É uma exceção autorizada à proibição de `git push --force` do `PROMPT.md`. Conteúdo e datas de cada commit não mudaram (conferido por comparação de trees). Os hashes mudaram, e as abas "Commits" dos PRs ainda mostram os commits antigos.
 
 ## Etapas
 
