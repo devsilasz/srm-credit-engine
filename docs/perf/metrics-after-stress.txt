@@ -1,8 +1,9 @@
-credit_engine_settlements_total{currency="BRL",outcome="receivable_already_settled",type="DUPLICATA_MERCANTIL"} 2261.0
-credit_engine_settlements_total{currency="BRL",outcome="replay",type="DUPLICATA_MERCANTIL"} 2242.0
+credit_engine_settlements_total{currency="BRL",outcome="receivable_already_settled",type="DUPLICATA_MERCANTIL"} 2253.0
+credit_engine_settlements_total{currency="BRL",outcome="replay",type="DUPLICATA_MERCANTIL"} 2250.0
 credit_engine_settlements_total{currency="BRL",outcome="success",type="DUPLICATA_MERCANTIL"} 1876.0
-credit_engine_settlements_total{currency="USD",outcome="success",type="DUPLICATA_MERCANTIL"} 377.0
+credit_engine_settlements_total{currency="USD",outcome="success",type="DUPLICATA_MERCANTIL"} 376.0
 hikaricp_connections_max{pool="HikariPool-1"} 10.0
 hikaricp_connections_pending{pool="HikariPool-1"} 0.0
 hikaricp_connections_timeout_total{pool="HikariPool-1"} 0.0
-jvm_gc_pause_seconds_max{action="end of minor GC",cause="G1 Evacuation Pause",gc="G1 Young Generation"} 0.017
+jvm_gc_pause_seconds_max{action="end of minor GC",cause="CodeCache GC Threshold",gc="G1 Young Generation"} 0.0
+jvm_gc_pause_seconds_max{action="end of minor GC",cause="G1 Evacuation Pause",gc="G1 Young Generation"} 0.008
