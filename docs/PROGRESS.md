@@ -40,6 +40,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 - Pós-entrega: a pedido do autor, o histórico da `main` foi reescrito para remover a coautoria das mensagens e deixar `devsilasz` como autor e committer de todos os commits, inclusive os merges. É uma exceção autorizada à proibição de `git push --force` do `PROMPT.md`. Conteúdo e datas de cada commit não mudaram (conferido por comparação de trees). Os hashes mudaram, e as abas "Commits" dos PRs ainda mostram os commits antigos.
 
+- Pós-entrega: a primeira medição por camada saiu com exit 0 e números errados (125 testes na integração, 725 linhas locais contra 656 no E2E, por classes gravadas em `target/classes` pela extensão Java do VS Code). O gerador agora falha se as medições não forem comparáveis. O texto do relatório também revelou que `POST /api/receivables` com `400` não tinha teste; ele foi adicionado.
+
 ## Etapas
 
 | # | Branch | Status | PR | Observação |
@@ -63,7 +65,7 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 16 | `chore/verify-all` | ✅ | #17 | `scripts/verify-all.sh` sem flags → exit 0 |
 | 17 | `fix/nginx-host-header` | ✅ | #18 | `403` no painel, encontrado pelo autor; `verify-all.sh --skip-perf` verde, sem repetir carga e estresse |
 | 18 | `fix/verify-all-origin-check` | ✅ | #19 | asserção do PR #18 não testava nada |
-| 19 | `docs/coverage-report` | em andamento | | cobertura por camada, pedido do autor |
+| 19 | `docs/coverage-report` | ✅ | #20 | cobertura por camada em `docs/coverage/REPORT.md`, pedido do autor |
 
 ## BLOCKED
 

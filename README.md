@@ -168,11 +168,11 @@ scripts/verify-all.sh                        # tudo, a partir de um banco zerado
 <!-- coverage:start -->
 | Camada | Testes | Linhas | Branches |
 |---|---:|---:|---:|
-| Unitário | 27 | 12,0% (87/725) | 12,1% (18/149) |
-| Integração | 125 | 92,0% (667/725) | 86,6% (129/149) |
-| Contrato | 11 | 85,8% (622/725) | 64,4% (96/149) |
+| Unitário | 27 | 11,6% (76/656) | 12,1% (18/149) |
+| Integração | 99 | 92,1% (604/656) | 85,2% (127/149) |
+| Contrato | 11 | 86,6% (568/656) | 64,4% (96/149) |
 | E2E | 1 | 71,3% (468/656) | 49,7% (74/149) |
-| Unitário + integração + contrato | 109 | 98,5% (714/725) | 89,3% (133/149) |
+| Unitário + integração + contrato | 137 | 98,3% (645/656) | 89,3% (133/149) |
 <!-- coverage:end -->
 
 O build falha abaixo de 70% de linhas no projeto ou de 90% de linhas e branches em `domain.pricing`.
