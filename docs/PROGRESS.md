@@ -3,7 +3,7 @@
 Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 **Etapa atual:** concluído; só resta a revisão do autor
-**Último comando:** `scripts/verify-all.sh` sem flags, no commit `583906b` → exit 0 (`VERIFICAÇÃO COMPLETA`)
+**Último comando:** `scripts/verify-all.sh --skip-perf` → passos verdes (exit 2 por causa da flag). A última execução sem flags foi no commit `583906b`, antes da correção do Nginx.
 **Próximo passo (autor):** preencher as seções 1 a 3 de `AI_USAGE.md`, assumir os critérios em `docs/acceptance/README.md` e revisar a seção 5 do `SPEC.md`.
 
 ## Ambiente de execução do agente
@@ -34,6 +34,8 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 
 - Etapa 13: o `ContractIT` revelou que o schema `Problem` não estava no spec publicado: todas as respostas de erro referenciavam algo inexistente, porque o springdoc descarta os `components` do bean `OpenAPI`. Corrigido registrando o schema no `OpenApiCustomizer`.
 
+- Pós-entrega: o autor encontrou `403` ao usar o painel em `localhost:3000`. Causa em `frontend/nginx.conf` (`$host` sem porta). O `verify-all.sh` e o E2E não pegaram porque não usavam a porta publicada com `Origin`. Detalhes em `AI_USAGE.md`.
+
 ## Etapas
 
 | # | Branch | Status | PR | Observação |
@@ -55,6 +57,7 @@ Estado do loop de `PROMPT.md`. Atualizado ao fim de cada etapa.
 | 14 | `test/perf` | ✅ | #15 | quebra não atingida até 800 req/s |
 | 15 | `docs/review-decisions` | ✅ | #16 | |
 | 16 | `chore/verify-all` | ✅ | #17 | `scripts/verify-all.sh` sem flags → exit 0 |
+| 17 | `fix/nginx-host-header` | ✅ | #18 | `403` no painel, encontrado pelo autor; `verify-all.sh --skip-perf` verde, sem repetir carga e estresse |
 
 ## BLOCKED
 

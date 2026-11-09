@@ -62,8 +62,11 @@ services:
     build: ./frontend/e2e
     profiles: ["e2e"]
     environment:
-      BASE_URL: http://frontend
+      # Pela porta publicada, como o navegador do operador: Origin e Host carregam a porta 3000.
+      BASE_URL: http://host.docker.internal:3000
       API_URL: http://backend:8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./docs/screenshots:/results
     depends_on:

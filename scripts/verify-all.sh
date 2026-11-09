@@ -131,6 +131,10 @@ curl -fsS $API/actuator/prometheus | grep -q '^credit_engine_settlements_total' 
 echo "ok   métricas de negócio expostas"
 assert_eq "frontend" "$(curl -fsS $FRONT -o /dev/null -w '%{http_code}')" "200"
 assert_eq "proxy /api do Nginx" "$(curl -fsS $FRONT/api/assignors -o /dev/null -w '%{http_code}')" "200"
+# O navegador só envia Origin em POST: é esse caminho que o CORS do backend pode recusar.
+assert_eq "POST pelo Nginx com Origin do navegador" "$(curl -sS -X POST $FRONT/api/pricing/quote \
+  -H 'Content-Type: application/json' -H "Origin: $FRONT" \
+  -d "{$QUOTE,\"paymentCurrency\":\"BRL\"}" -o /dev/null -w '%{http_code}')" "200"
 
 step "3b. E2E: Playwright contra o compose"
 docker compose --profile e2e run --rm --build e2e || fail "fluxo do operador no Playwright"
